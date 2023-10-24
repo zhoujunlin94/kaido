@@ -7,7 +7,7 @@ import com.kaido.internal.mybatis.TKHandler;
 import com.kaido.repository.db.entity.base.CacheConfig;
 import com.kaido.repository.db.mapper.base.CacheConfigMapper;
 import org.springframework.beans.factory.InitializingBean;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;
 
@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  * @date 2023年03月27日 21:55
  * @desc
  */
-@Component
+@Repository
 public class CacheConfigHandler extends TKHandler<CacheConfigMapper, CacheConfig> implements InitializingBean {
 
     private static final Cache<String, String> CACHE = CacheBuilder.newBuilder().concurrencyLevel(Runtime.getRuntime().availableProcessors())

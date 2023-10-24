@@ -1,9 +1,9 @@
-package com.kaido.controller;
+package com.kaido.controller.config;
 
 import com.github.pagehelper.PageInfo;
-import com.kaido.dto.CacheConfigDTO;
-import com.kaido.dto.CacheConfigPageQueryDTO;
-import com.kaido.service.CacheConfigService;
+import com.kaido.dto.config.CacheConfigDTO;
+import com.kaido.dto.config.CacheConfigPageQueryDTO;
+import com.kaido.service.config.CacheConfigService;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 

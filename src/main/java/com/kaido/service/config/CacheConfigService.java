@@ -1,8 +1,8 @@
-package com.kaido.service;
+package com.kaido.service.config;
 
 import com.github.pagehelper.PageInfo;
-import com.kaido.dto.CacheConfigDTO;
-import com.kaido.dto.CacheConfigPageQueryDTO;
+import com.kaido.dto.config.CacheConfigDTO;
+import com.kaido.dto.config.CacheConfigPageQueryDTO;
 
 /**
  * @author zhoujunlin

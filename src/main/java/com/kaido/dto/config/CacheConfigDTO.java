@@ -1,4 +1,4 @@
-package com.kaido.dto;
+package com.kaido.dto.config;
 
 import lombok.Data;
 

@@ -1,13 +1,13 @@
-package com.kaido.service.impl;
+package com.kaido.service.config.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.kaido.dto.CacheConfigDTO;
-import com.kaido.dto.CacheConfigPageQueryDTO;
+import com.kaido.dto.config.CacheConfigDTO;
+import com.kaido.dto.config.CacheConfigPageQueryDTO;
 import com.kaido.repository.db.entity.base.CacheConfig;
 import com.kaido.repository.db.handler.base.CacheConfigHandler;
-import com.kaido.service.CacheConfigService;
+import com.kaido.service.config.CacheConfigService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 

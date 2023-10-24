@@ -49,7 +49,7 @@ public class HttpBaseInterceptor extends BaseInterceptor {
         try {
             long start = (long) request.getAttribute("startTime");
             long end = System.currentTimeMillis();
-            log.warn("结束加载请求:{},总用时:{}ms", request.getRequestURL().toString(), end - start);
+            log.warn("结束请求:{},总用时:{}ms", request.getRequestURL().toString(), end - start);
         } finally {
             try {
                 MDC.remove(RequestIdUtil.REQUEST_ID);

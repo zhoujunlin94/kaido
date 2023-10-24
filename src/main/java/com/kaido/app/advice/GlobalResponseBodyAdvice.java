@@ -1,4 +1,4 @@
-package com.kaido.advice;
+package com.kaido.app.advice;
 
 import com.kaido.internal.exception.CommonErrorCode;
 import com.kaido.internal.web.dto.JSONResponse;

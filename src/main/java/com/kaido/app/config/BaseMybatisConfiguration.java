@@ -1,4 +1,4 @@
-package com.kaido.config;
+package com.kaido.app.config;
 
 import com.kaido.internal.mybatis.AbstractMybatisConfig;
 import com.zaxxer.hikari.HikariDataSource;

@@ -1,4 +1,4 @@
-package com.kaido.dto;
+package com.kaido.dto.config;
 
 import com.kaido.internal.web.dto.PageParam;
 import lombok.Data;
