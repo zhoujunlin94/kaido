@@ -8,10 +8,11 @@ import tk.mybatis.mapper.autoconfigure.MapperAutoConfiguration;
 
 @EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication(exclude = {
+        /*不要mybatis自动注入 改用手动注入数据源*/
         MapperAutoConfiguration.class,
         MybatisAutoConfiguration.class,
 
-        /*不注入redis*/
+        /*不要redis自动注入*/
         /*RedisAutoConfiguration.class,
         RedissonAutoConfiguration.class*/
 })
