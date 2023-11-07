@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kaido.repository.db.mapper.base.SysResourceMapper">
+  <resultMap id="BaseResultMap" type="com.kaido.repository.db.entity.base.SysResource">
+    <!--@mbg.generated generated on Tue Nov 07 22:41:36 CST 2023.-->
+    <!--@Table sys_resource-->
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="resource_code" jdbcType="VARCHAR" property="resourceCode" />
+    <result column="resource_name" jdbcType="VARCHAR" property="resourceName" />
+    <result column="resource_type" jdbcType="VARCHAR" property="resourceType" />
+    <result column="resource_parent" jdbcType="INTEGER" property="resourceParent" />
+    <result column="resource_status" jdbcType="BOOLEAN" property="resourceStatus" />
+    <result column="resource_icon" jdbcType="VARCHAR" property="resourceIcon" />
+    <result column="resource_path" jdbcType="VARCHAR" property="resourcePath" />
+    <result column="resource_order" jdbcType="INTEGER" property="resourceOrder" />
+    <result column="is_deleted" jdbcType="BOOLEAN" property="isDeleted" />
+    <result column="created_by" jdbcType="INTEGER" property="createdBy" />
+    <result column="created_at" jdbcType="TIMESTAMP" property="createdAt" />
+    <result column="updated_by" jdbcType="INTEGER" property="updatedBy" />
+    <result column="updated_at" jdbcType="TIMESTAMP" property="updatedAt" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated generated on Tue Nov 07 22:41:36 CST 2023.-->
+    id, resource_code, resource_name, resource_type, resource_parent, resource_status, 
+    resource_icon, resource_path, resource_order, is_deleted, created_by, created_at, 
+    updated_by, updated_at
+  </sql>
+</mapper>
