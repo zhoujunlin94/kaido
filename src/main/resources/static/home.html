@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>后台管理系统</title>
+    <script src="./assets/js/jquery.min.js"></script>
+    <script src="./assets/js/vue.js"></script>
+    <script src="./assets/js/element.js"></script>
+    <link rel="stylesheet" href="./assets/css/element.css">
+    <link rel="stylesheet" href="./assets/css/home.css">
+</head>
+
+<body>
+
+<div id="main-home">
+    <el-container>
+        <el-header>
+            <el-row>
+                <el-col :span="4">
+                    <div class="main-home-logo"></div>
+                </el-col>
+                <el-col :span="16">
+                    <div>
+                        <span>Welcome！</span>
+                    </div>
+                </el-col>
+                <el-col :span="1">
+                    <div class="icon-el">
+                        <el-tooltip class="item" effect="light" content="我的信息" placement="top-start">
+                            <i class="el-icon-user-solid"></i>
+                        </el-tooltip>
+                    </div>
+                </el-col>
+                <el-col :span="1">
+                    <div class="icon-el">
+                        <el-tooltip class="item" effect="light" content="设置" placement="top-start">
+                            <i class="el-icon-s-tools"></i>
+                        </el-tooltip>
+                    </div>
+                </el-col>
+                <el-col :span="1">
+                    <div class="icon-el">
+                        <el-tooltip class="item" effect="light" content="安全退出" placement="top-start">
+                            <i class="el-icon-remove"></i>
+                        </el-tooltip>
+                    </div>
+                </el-col>
+            </el-row>
+        </el-header>
+
+        <el-container>
+            <el-aside width="200px">
+                <el-menu :unique-opened=true class="el-menu-vertical-demo" @select="handleMenuItemClick">
+                    <template v-for="item in menuItems">
+                        <el-submenu v-if="item.children.length > 0" :index="item.id+''">
+                            <template #title>
+                                {{ item.resourceName }}
+                            </template>
+                            <el-menu-item v-for="child in item.children" :key="child.id" :index="child.resourcePath">
+                                {{ child.resourceName }}
+                            </el-menu-item>
+                        </el-submenu>
+                        <el-menu-item v-else-if="item.resourcePath" :index="item.resourcePath">
+                            {{ item.resourceName }}
+                        </el-menu-item>
+                    </template>
+                </el-menu>
+            </el-aside>
+
+            <el-main>
+                <iframe :src="frameSrc" style="height: 100%;width: 100%;border: 0"></iframe>
+            </el-main>
+        </el-container>
+    </el-container>
+</div>
+
+</body>
+
+<script>
+    new Vue({
+        el: '#main-home',
+        data: {
+            frameSrc: "",
+            menuItems: []
+        },
+
+        created() {
+            this.loadMenu();
+        },
+
+        methods: {
+            handleMenuItemClick(index) {
+                console.log("===========>", index)
+                if (index) {
+                    this.frameSrc = index + "?v=" + (Math.random() * 1000)
+                }
+            },
+
+            loadMenu() {
+                $.ajax({
+                    url: '/admin/rbac/getResources?resourceType=MENU',
+                    type: 'get'
+                }).then(res => {
+                    this.menuItems = res.data;
+                })
+            }
+        }
+    })
+</script>
+
+</html>
