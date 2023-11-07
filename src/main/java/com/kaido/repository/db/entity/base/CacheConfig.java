@@ -19,7 +19,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "cache_config")
+@Table(name = "sys_cache_config")
 public class CacheConfig implements Serializable {
     /**
      * 主键ID

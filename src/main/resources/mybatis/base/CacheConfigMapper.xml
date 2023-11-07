@@ -3,7 +3,7 @@
 <mapper namespace="com.kaido.repository.db.mapper.base.CacheConfigMapper">
   <resultMap id="BaseResultMap" type="com.kaido.repository.db.entity.base.CacheConfig">
     <!--@mbg.generated generated on Wed Jul 05 22:22:33 CST 2023.-->
-    <!--@Table cache_config-->
+    <!--@Table sys_cache_config-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="key" jdbcType="VARCHAR" property="key" />
     <result column="value" jdbcType="VARCHAR" property="value" />
