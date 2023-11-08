@@ -17,4 +17,15 @@
     <!--@mbg.generated generated on Tue Nov 07 22:41:36 CST 2023.-->
     id, role_id, resource_id, is_deleted, created_by, created_at, updated_by, updated_at
   </sql>
+
+  <select id="getUserRoleResourceIds" resultType="java.lang.Integer">
+    select srr.resource_id from
+    sys_user_role sur
+    join sys_role sr on sur.role_id = sr.id and sr.role_status = 1
+    join sys_role_resource srr on sr.id = srr.role_id
+    <where>
+      sur.user_id = #{userId, jdbcType=INTEGER}
+    </where>
+  </select>
+
 </mapper>

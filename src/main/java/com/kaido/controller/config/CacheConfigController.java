@@ -6,10 +6,10 @@ import com.kaido.dto.config.CacheConfigPageQueryDTO;
 import com.kaido.service.config.CacheConfigService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -19,13 +19,13 @@ import javax.validation.constraints.NotNull;
  * @desc
  */
 @Validated
-@Api(tags = {"api-缓存配置控制器"})
+@Api(tags = {"B-缓存配置控制器"})
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/cache-cfg")
 public class CacheConfigController {
 
-    @Resource
-    private CacheConfigService cacheConfigService;
+    private final CacheConfigService cacheConfigService;
 
     @PostMapping("/page")
     @ApiOperation(value = "分页")

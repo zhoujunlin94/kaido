@@ -8,10 +8,9 @@ import com.kaido.dto.config.CacheConfigPageQueryDTO;
 import com.kaido.repository.db.entity.base.CacheConfig;
 import com.kaido.repository.db.handler.base.CacheConfigHandler;
 import com.kaido.service.config.CacheConfigService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-
-import javax.annotation.Resource;
 
 /**
  * @author zhoujunlin
@@ -19,10 +18,10 @@ import javax.annotation.Resource;
  * @desc
  */
 @Service
+@RequiredArgsConstructor
 public class CacheConfigServiceImpl implements CacheConfigService {
 
-    @Resource
-    private CacheConfigHandler cacheConfigHandler;
+    private final CacheConfigHandler cacheConfigHandler;
 
     @Override
     public PageInfo<CacheConfigDTO> page(CacheConfigPageQueryDTO queryDTO) {

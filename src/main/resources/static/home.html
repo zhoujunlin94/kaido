@@ -100,7 +100,7 @@
 
             loadMenu() {
                 $.ajax({
-                    url: '/admin/rbac/getResources?resourceType=MENU',
+                    url: '/api/sa/resource/getUserRoleResources?resourceType=MENU',
                     type: 'get'
                 }).then(res => {
                     this.menuItems = res.data;
