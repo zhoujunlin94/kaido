@@ -54,6 +54,7 @@
 </div>
 </body>
 
+<script src="assets/js/common.js"></script>
 <script>
     new Vue({
         el: '#app',
@@ -78,7 +79,8 @@
                 this.$refs.loginForm.validate((valid) => {
                     if (valid) {
                         this.logining = true;
-                        // todo 登录逻辑
+                        let loginRet = post("/api/sa/user/login", this.loginForm)
+                        console.log(loginRet)
                         window.location.href = "./home.html";
                     } else {
                         return false;
