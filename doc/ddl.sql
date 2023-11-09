@@ -26,7 +26,7 @@ drop table if exists `sys_resource`;
 CREATE TABLE `sys_resource`
 (
     `id`              int(11) UNSIGNED    NOT NULL AUTO_INCREMENT COMMENT '主键  权限id',
-    `resource_code`   varchar(32)         NOT NULL DEFAULT '' COMMENT '权限code',
+    `resource_code`   varchar(64)         NOT NULL DEFAULT '' COMMENT '权限code',
     `resource_name`   varchar(255)        NOT NULL DEFAULT '' COMMENT '权限名',
     `resource_type`   varchar(32)         NOT NULL DEFAULT 'MENU' COMMENT '资源类型 菜单、按钮',
     `resource_parent` int(11) UNSIGNED    NOT NULL DEFAULT 0 COMMENT '父级资源id',
@@ -42,7 +42,7 @@ CREATE TABLE `sys_resource`
     `updated_at`      datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
     INDEX `idx_resource_parent` (`resource_parent`) USING BTREE,
-    UNIQUE INDEX `uniq_permission` (`resource_name`) USING BTREE
+    UNIQUE INDEX `uniq_permission` (`resource_code`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb4

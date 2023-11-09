@@ -52,6 +52,8 @@
         <pagehelper.version>5.1.11</pagehelper.version>
 
         <knife4j.version>3.0.3</knife4j.version>
+
+        <sa-token.version>1.37.0</sa-token.version>
     </properties>
 
     <dependencies>
@@ -193,6 +195,13 @@
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
             <version>${pagehelper.version}</version>
+        </dependency>
+
+        <!-- Sa-Token权限认证 -->
+        <dependency>
+            <groupId>cn.dev33</groupId>
+            <artifactId>sa-token-spring-boot-starter</artifactId>
+            <version>${sa-token.version}</version>
         </dependency>
 
         <!--测试相关-->

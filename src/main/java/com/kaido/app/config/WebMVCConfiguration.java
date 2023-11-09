@@ -1,5 +1,8 @@
 package com.kaido.app.config;
 
+import cn.dev33.satoken.interceptor.SaInterceptor;
+import cn.dev33.satoken.router.SaRouter;
+import cn.dev33.satoken.stp.StpUtil;
 import com.kaido.internal.web.interceptor.HttpBaseInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -25,10 +28,26 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
+        // 基础http请求拦截器
         registry.addInterceptor(httpBaseInterceptor)
                 .excludePathPatterns("/favicon.ico", "/assets/**/*")
-                .excludePathPatterns("/swagger-resources", "/v2/api-docs", "/doc.html")
-                .excludePathPatterns("/**/*.js");
+                .excludePathPatterns("/swagger-resources", "/v2/api-docs")
+                .excludePathPatterns("/**/*.js", "/**/*.html");
+
+        // sa-token拦截器
+        registry.addInterceptor(new SaInterceptor(handler -> {
+                    // 登录权限判断
+                    SaRouter
+                            .match("/**")
+                            .notMatch("/login.html", "/api/sa/user/login")
+                            .check(r -> StpUtil.checkLogin());
+
+                    // 模块权限判断
+                    SaRouter.match("/api/cache-cfg/**/*").check(r -> StpUtil.hasPermissionOr("admin", "cache-cfg"));
+
+                }).isAnnotation(false)
+        );
+
     }
 
     @Override
