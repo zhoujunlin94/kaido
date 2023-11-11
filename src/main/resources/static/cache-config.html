@@ -8,6 +8,7 @@
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/vue.js"></script>
     <script src="./assets/js/element.js"></script>
+    <script src="assets/js/common.js"></script>
     <link rel="stylesheet" href="./assets/css/element.css">
     <link rel="stylesheet" href="./assets/css/crud.css">
 </head>
@@ -123,14 +124,11 @@
                     "value": this.queryForm.value,
                     "desc": this.queryForm.desc
                 }
-                $.ajax({
-                    url: '/api/cache-cfg/page',
-                    type: 'post',
-                    contentType: 'application/json',
-                    data: JSON.stringify(pageQuery)
-                }).then(res => {
-                    this.page = res.data;
-                })
+                page('/api/cache-cfg/page', pageQuery, this.setPageInfo, this.$message)
+            },
+
+            setPageInfo(pageInfo) {
+                this.page = pageInfo
             },
 
             sizeChange(val) {

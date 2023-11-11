@@ -8,6 +8,7 @@
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/vue.js"></script>
     <script src="./assets/js/element.js"></script>
+    <script src="assets/js/common.js"></script>
     <link rel="stylesheet" href="./assets/css/element.css">
     <style>
         .login-container {
@@ -26,7 +27,7 @@
             box-shadow: 0 0 25px #cac6c6;
         }
 
-        .rememberme {
+        .remember-me {
             margin: 0 0 15px;
             text-align: left;
         }
@@ -44,8 +45,8 @@
         <el-form-item prop="userPassword">
             <el-input type="password" v-model="loginForm.userPassword" auto-complete="off" placeholder="密码"></el-input>
         </el-form-item>
-        <el-form-item prop="checked">
-            <el-checkbox v-model="loginForm.checked" class="rememberme">记住密码</el-checkbox>
+        <el-form-item prop="rememberMe">
+            <el-checkbox v-model="loginForm.rememberMe" class="remember-me">记住密码</el-checkbox>
         </el-form-item>
         <el-form-item style="width:100%;">
             <el-button type="primary" style="width:100%;" @click="handleSubmit" :loading="logining">登录</el-button>
@@ -54,7 +55,6 @@
 </div>
 </body>
 
-<script src="assets/js/common.js"></script>
 <script>
     new Vue({
         el: '#app',
@@ -63,7 +63,7 @@
             loginForm: {
                 accountName: 'admin',
                 userPassword: 'admin',
-                checked: false
+                rememberMe: false
             },
             loginRule: {
                 accountName: [{required: true, message: 'please enter your account', trigger: 'blur'}],
@@ -79,9 +79,7 @@
                 this.$refs.loginForm.validate((valid) => {
                     if (valid) {
                         this.logining = true;
-                        let loginRet = post("/api/sa/user/login", this.loginForm)
-                        console.log(loginRet)
-                        window.location.href = "./home.html";
+                        login(this.loginForm, this.$message)
                     } else {
                         return false;
                     }

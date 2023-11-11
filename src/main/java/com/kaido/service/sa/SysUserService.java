@@ -1,5 +1,6 @@
 package com.kaido.service.sa;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import com.kaido.dto.sa.LoginParamDTO;
 
 /**
@@ -9,7 +10,7 @@ import com.kaido.dto.sa.LoginParamDTO;
  */
 public interface SysUserService {
 
-    boolean login(LoginParamDTO loginParam);
+    SaTokenInfo login(LoginParamDTO loginParam);
 
     void logout();
 

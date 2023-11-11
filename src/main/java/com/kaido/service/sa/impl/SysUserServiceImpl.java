@@ -1,5 +1,6 @@
 package com.kaido.service.sa.impl;
 
+import cn.dev33.satoken.stp.SaTokenInfo;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
@@ -25,7 +26,7 @@ public class SysUserServiceImpl implements SysUserService {
     private final SysUserHandler sysUserHandler;
 
     @Override
-    public boolean login(LoginParamDTO loginParam) {
+    public SaTokenInfo login(LoginParamDTO loginParam) {
         SysUser sysUser = sysUserHandler.selectByAccountName(loginParam.getAccountName());
         if (Objects.isNull(sysUser)) {
             throw MeetException.meet("用户名或密码错误");
@@ -35,7 +36,7 @@ public class SysUserServiceImpl implements SysUserService {
             throw MeetException.meet("用户名或密码错误");
         }
         StpUtil.login(sysUser.getId());
-        return true;
+        return StpUtil.getTokenInfo();
     }
 
     @Override

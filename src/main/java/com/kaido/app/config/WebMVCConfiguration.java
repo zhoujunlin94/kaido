@@ -38,12 +38,12 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
         registry.addInterceptor(new SaInterceptor(handler -> {
                     // 登录权限判断
                     SaRouter
-                            .match("/**")
-                            .notMatch("/login.html", "/api/sa/user/login")
+                            .match("/api/**/*")
+                            .notMatch("/api/sa/user/login")
                             .check(r -> StpUtil.checkLogin());
 
                     // 模块权限判断
-                    SaRouter.match("/api/cache-cfg/**/*").check(r -> StpUtil.hasPermissionOr("admin", "cache-cfg"));
+            SaRouter.match("/api/cache-cfg/**/*").check(r -> StpUtil.hasRoleOr("admin", "cache-cfg"));
 
                 }).isAnnotation(false)
         );

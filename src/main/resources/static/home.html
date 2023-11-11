@@ -8,6 +8,7 @@
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/vue.js"></script>
     <script src="./assets/js/element.js"></script>
+    <script src="assets/js/common.js"></script>
     <link rel="stylesheet" href="./assets/css/element.css">
     <link rel="stylesheet" href="./assets/css/home.css">
 </head>
@@ -78,6 +79,7 @@
 
 </body>
 
+
 <script>
     new Vue({
         el: '#main-home',
@@ -87,24 +89,14 @@
         },
 
         created() {
-            this.loadMenu();
+            loadMenu(this.menuItems, this.$message);
         },
 
         methods: {
             handleMenuItemClick(index) {
-                console.log("===========>", index)
                 if (index) {
                     this.frameSrc = index + "?v=" + (Math.random() * 1000)
                 }
-            },
-
-            loadMenu() {
-                $.ajax({
-                    url: '/api/sa/resource/getUserRoleResources?resourceType=MENU',
-                    type: 'get'
-                }).then(res => {
-                    this.menuItems = res.data;
-                })
             }
         }
     })

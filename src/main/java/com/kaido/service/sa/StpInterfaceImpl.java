@@ -34,7 +34,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        Integer userId = (Integer) loginId;
+        Integer userId = Integer.parseInt(loginId.toString());
         List<Integer> resourceIds = sysRoleResourceHandler.getUserRoleResourceIds(userId);
         return sysResourceHandler.getResource(resourceIds).stream().filter(resource -> StrUtil.equals(resource.getResourceType(), ResourceType.ROUTER.name()))
                 .map(SysResource::getResourceCode).collect(Collectors.toList());
@@ -45,7 +45,7 @@ public class StpInterfaceImpl implements StpInterface {
      */
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        Integer userId = (Integer) loginId;
+        Integer userId = Integer.parseInt(loginId.toString());
         List<Integer> roleIds = sysUserRoleHandler.selectRoleIdByUserId(userId);
         return sysRoleHandler.selectByRoleIds(roleIds).stream().map(SysRole::getRoleCode).collect(Collectors.toList());
     }
