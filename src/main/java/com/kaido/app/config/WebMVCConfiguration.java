@@ -43,7 +43,7 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
                             .check(r -> StpUtil.checkLogin());
 
                     // 模块权限判断
-            SaRouter.match("/api/cache-cfg/**/*").check(r -> StpUtil.hasRoleOr("admin", "cache-cfg"));
+                    SaRouter.match("/api/cache-cfg/**/*").check(r -> StpUtil.checkRoleOr("admin", "cache-cfg"));
 
                 }).isAnnotation(false)
         );
