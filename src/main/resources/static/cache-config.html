@@ -161,7 +161,19 @@
             },
 
             del(id) {
-                del(id, this.delSuccessCallback, this.$message)
+                this.$confirm('此操作将永久删除该数据, 是否继续?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    del(id, this.delSuccessCallback, this.$message)
+                }).catch(() => {
+                    // this.$message({
+                    //     showClose: true,
+                    //     message: "已取消删除",
+                    //     type: 'info'
+                    // });
+                });
             },
 
             delSuccessCallback() {
