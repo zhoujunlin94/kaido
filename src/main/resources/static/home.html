@@ -79,7 +79,6 @@
 
 </body>
 
-
 <script>
     new Vue({
         el: '#main-home',
@@ -89,7 +88,7 @@
         },
 
         created() {
-            loadMenu(this.menuItems, this.$message);
+            loadMenu(this.setMenuItems, this.$message);
         },
 
         methods: {
@@ -97,6 +96,9 @@
                 if (index) {
                     this.frameSrc = index + "?v=" + (Math.random() * 1000)
                 }
+            },
+            setMenuItems(menuItems) {
+                this.menuItems = menuItems;
             }
         }
     })

@@ -13,7 +13,7 @@ function login(loginParam, toast) {
     }).then(res => {
         if (res.code === 0) {
             setToken(res.data.tokenValue)
-            window.location.href = "./home.html";
+            window.location.href = domain + "/home.html";
         } else {
             toast({
                 showClose: true,
@@ -28,7 +28,7 @@ function getToken() {
     return "Bearer " + localStorage.getItem("Authorization")
 }
 
-function loadMenu(menuItems, toast) {
+function loadMenu(setMenuItems, toast) {
     $.ajax({
         url: domain + '/api/sa/resource/getUserRoleResources?resourceType=MENU',
         type: 'get',
@@ -37,9 +37,7 @@ function loadMenu(menuItems, toast) {
         }
     }).then(res => {
         if (res.code === 0) {
-            for (let i = 0; i < res.data.length; i++) {
-                menuItems.push(res.data[i]);
-            }
+            setMenuItems(res.data)
         } else {
             toast({
                 showClose: true,
@@ -70,5 +68,85 @@ function page(url, queryParam, setPageInfo, toast) {
             })
         }
     })
+}
 
+function save(formData, updateUrl, insertUrl, updateSuccessCallback, insertSuccessCallback, toast) {
+    let data = JSON.stringify(formData);
+    if (formData.id) {
+        $.ajax({
+            url: domain + updateUrl,
+            type: 'post',
+            contentType: 'application/json',
+            headers: {
+                "Authorization": getToken()
+            },
+            data: data
+        }).then(res => {
+            if (res.code === 0) {
+                updateSuccessCallback()
+                toast({
+                    showClose: true,
+                    message: "更新成功",
+                    type: 'success'
+                })
+            } else {
+                toast({
+                    showClose: true,
+                    message: "更新失败",
+                    type: 'error'
+                })
+            }
+        })
+    } else {
+        $.ajax({
+            url: domain + insertUrl,
+            type: 'post',
+            contentType: 'application/json',
+            headers: {
+                "Authorization": getToken()
+            },
+            data: data
+        }).then(res => {
+            if (res.code === 0) {
+                insertSuccessCallback()
+                toast({
+                    showClose: true,
+                    message: "新增成功",
+                    type: 'success'
+                })
+            } else {
+                toast({
+                    showClose: true,
+                    message: "新增失败",
+                    type: 'error'
+                })
+            }
+        })
+    }
+}
+
+function del(id, delSuccessCallback, toast) {
+    $.ajax({
+        url: domain + '/api/cache-cfg/delete?id=' + id,
+        type: 'post',
+        contentType: 'application/json',
+        headers: {
+            "Authorization": getToken()
+        }
+    }).then(res => {
+        if (res.code === 0) {
+            delSuccessCallback()
+            toast({
+                showClose: true,
+                message: "删除成功",
+                type: 'success'
+            })
+        } else {
+            toast({
+                showClose: true,
+                message: "删除失败",
+                type: 'error'
+            })
+        }
+    })
 }

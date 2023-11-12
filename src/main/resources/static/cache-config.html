@@ -47,7 +47,7 @@
         <el-button type="primary" @click="add">新增</el-button>
     </div>
 
-    <el-table :data="page.list" stripe border style="width: 100%">
+    <el-table :data="pageInfo.list" stripe border style="width: 100%">
         <el-table-column prop="id" label="id"></el-table-column>
         <el-table-column prop="key" label="key"></el-table-column>
         <el-table-column prop="value" label="value"></el-table-column>
@@ -67,7 +67,7 @@
                 :page-size="pageSize"
                 :page-sizes="[10, 30, 50, 100, 200]"
                 :current-page="pageNum"
-                :total="page.total"
+                :total="pageInfo.total"
                 @prev-click="loadTable"
                 @size-change="sizeChange"
                 @current-change="loadTable">
@@ -98,7 +98,7 @@
     new Vue({
         el: '#app',
         data: {
-            page: {},
+            pageInfo: {},
             pageNum: 1,
             pageSize: 10,
             dialogVisible: false,
@@ -128,7 +128,7 @@
             },
 
             setPageInfo(pageInfo) {
-                this.page = pageInfo
+                this.pageInfo = pageInfo
             },
 
             sizeChange(val) {
@@ -147,63 +147,26 @@
             },
 
             save() {
-                let data = JSON.stringify(this.form);
-                if (this.form.id) {
-                    $.ajax({
-                        url: '/api/cache-cfg/update',
-                        type: 'post',
-                        contentType: 'application/json',
-                        data: data
-                    }).then(res => {
-                        if (res.code === 0) {
-                            this.dialogVisible = false;
-                            this.loadTable(this.pageNum);
-                            this.toast('更新成功', 'success')
-                        } else {
-                            this.toast('更新失败', 'error')
-                        }
-                    })
-                } else {
-                    $.ajax({
-                        url: '/api/cache-cfg/add',
-                        type: 'post',
-                        contentType: 'application/json',
-                        data: data
-                    }).then(res => {
-                        if (res.code === 0) {
-                            this.dialogVisible = false;
-                            this.loadTable(1);
-                            this.toast('新增成功', 'success')
-                        } else {
-                            this.toast('新增失败', 'error')
-                        }
-                    })
-                }
+                save(this.form, '/api/cache-cfg/update', '/api/cache-cfg/add', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
+            },
+
+            updateSuccessCallback() {
+                this.dialogVisible = false;
+                this.loadTable(this.pageNum)
+            },
+
+            insertSuccessCallback() {
+                this.dialogVisible = false;
+                this.loadTable(1)
             },
 
             del(id) {
-                $.ajax({
-                    url: '/api/cache-cfg/delete?id=' + id,
-                    type: 'post',
-                    contentType: 'application/json'
-                }).then(res => {
-                    if (res.code === 0) {
-                        this.loadTable(this.pageNum);
-                        this.toast('删除成功', 'success')
-                    } else {
-                        this.toast('删除失败', 'error')
-                    }
-                })
+                del(id, this.delSuccessCallback, this.$message)
             },
 
-            toast(msg, type) {
-                this.$message({
-                    showClose: true,
-                    message: msg,
-                    type: type
-                });
+            delSuccessCallback() {
+                this.loadTable(this.pageNum)
             }
-
         }
     })
 </script>
