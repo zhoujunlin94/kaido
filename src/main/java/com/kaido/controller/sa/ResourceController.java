@@ -1,5 +1,6 @@
 package com.kaido.controller.sa;
 
+import cn.dev33.satoken.stp.StpUtil;
 import com.kaido.service.sa.SysResourceService;
 import com.kaido.vo.sa.ResourceVO;
 import io.swagger.annotations.Api;
@@ -29,7 +30,7 @@ public class ResourceController {
     @GetMapping("/getUserRoleResources")
     @ApiOperation(value = "获取用户角色下的所有资源")
     public List<ResourceVO> getUserRoleResources(String resourceType) {
-        return sysResourceService.getUserRoleResources(1, resourceType);
+        return sysResourceService.getUserRoleResources(StpUtil.getLoginIdAsInt(), resourceType);
     }
 
 }

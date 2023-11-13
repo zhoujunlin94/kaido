@@ -63,7 +63,7 @@ CREATE TABLE `sys_role`
     `updated_by`  int(11) UNSIGNED    NOT NULL DEFAULT 0 COMMENT '更新人',
     `updated_at`  datetime            NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
     PRIMARY KEY (`id`),
-    UNIQUE INDEX `uniq_role` (`role_name`) USING BTREE
+    UNIQUE INDEX `uniq_role` (`role_code`) USING BTREE
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   DEFAULT CHARSET = utf8mb4
