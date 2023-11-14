@@ -33,7 +33,7 @@ public class SysUserDTO {
     @ApiModelProperty(value = "是否有效")
     private Boolean userStatus;
 
-    public void initCreate() {
+    public void initAndCheck4Create() {
         this.id = null;
         this.userStatus = false;
         Assert.hasText(this.userPassword, "用户密码不能为空");

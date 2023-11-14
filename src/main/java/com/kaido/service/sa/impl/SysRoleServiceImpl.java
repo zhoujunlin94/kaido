@@ -26,6 +26,7 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     // ================== CRUD =======================
 
+    @Override
     public boolean create(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = BeanUtil.toBean(roleDTO, SysRole.class);
         entity.setCreatedBy(loginUserId);
@@ -33,17 +34,20 @@ public class SysRoleServiceImpl implements SysRoleService {
         return sysRoleHandler.insertSelective(entity) > 0;
     }
 
+    @Override
     public boolean updateRoleStatus(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = SysRole.builder().id(roleDTO.getId()).roleStatus(roleDTO.getRoleStatus()).updatedBy(loginUserId).build();
         return sysRoleHandler.updateByPrimaryKeySelective(entity) > 0;
     }
 
+    @Override
     public boolean update(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = BeanUtil.toBean(roleDTO, SysRole.class);
         entity.setUpdatedBy(loginUserId);
         return sysRoleHandler.updateByPrimaryKeySelective(entity) > 0;
     }
 
+    @Override
     public PageInfo<SysRoleDTO> page(SysRolePageParamDTO pageParamDTO) {
         PageInfo<SysRole> entityPageInfo = PageHelper.startPage(pageParamDTO.getPageNo(), pageParamDTO.getPageSize())
                 .doSelectPageInfo(() -> sysRoleHandler.selectByParam(pageParamDTO));

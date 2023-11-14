@@ -16,6 +16,7 @@ public enum ResourceType {
      */
     ROUTER("路由"),
     MENU("菜单"),
+    BUTTON("按钮"),
     ;
 
 

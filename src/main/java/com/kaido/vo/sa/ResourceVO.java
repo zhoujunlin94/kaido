@@ -1,5 +1,6 @@
 package com.kaido.vo.sa;
 
+import com.kaido.constant.ResourceType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,7 +26,7 @@ public class ResourceVO {
     private String resourceDesc;
 
     @ApiModelProperty(value = "资源类型 菜单、按钮")
-    private String resourceType;
+    private ResourceType resourceType;
 
     @ApiModelProperty(value = "父级资源id")
     private Integer resourceParent;

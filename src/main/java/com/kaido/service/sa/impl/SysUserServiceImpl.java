@@ -45,13 +45,9 @@ public class SysUserServiceImpl implements SysUserService {
         return StpUtil.getTokenInfo();
     }
 
-    @Override
-    public void logout() {
-        StpUtil.logout();
-    }
-
     // =================== CRUD ===================
 
+    @Override
     public boolean create(SysUserDTO userDTO, Integer loginUserId) {
         SysUser entity = BeanUtil.toBean(userDTO, SysUser.class);
         entity.setUserPassword(DigestUtil.md5Hex(userDTO.getUserPassword()));
@@ -60,11 +56,13 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserHandler.insertSelective(entity) > 0;
     }
 
+    @Override
     public boolean updateUserStatus(SysUserDTO userDTO, Integer loginUserId) {
         SysUser entity = SysUser.builder().id(userDTO.getId()).userStatus(userDTO.getUserStatus()).updatedBy(loginUserId).build();
         return sysUserHandler.updateByPrimaryKeySelective(entity) > 0;
     }
 
+    @Override
     public boolean update(SysUserDTO userDTO, Integer loginUserId) {
         SysUser entity = BeanUtil.toBean(userDTO, SysUser.class);
         entity.setUserPassword(DigestUtil.md5Hex(userDTO.getUserPassword()));
@@ -72,6 +70,7 @@ public class SysUserServiceImpl implements SysUserService {
         return sysUserHandler.updateByPrimaryKeySelective(entity) > 0;
     }
 
+    @Override
     public PageInfo<SysUserDTO> page(SysUserPageParamDTO paramDTO) {
         PageInfo<SysUser> entityPageInfo = PageHelper.startPage(paramDTO.getPageNo(), paramDTO.getPageSize())
                 .doSelectPageInfo(() -> sysUserHandler.selectByParam(paramDTO));

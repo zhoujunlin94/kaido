@@ -1,14 +1,12 @@
 package com.kaido.repository.db.entity.base;
 
+import com.kaido.constant.ResourceType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -44,8 +42,9 @@ public class SysResource implements Serializable {
     /**
      * 资源类型 菜单、按钮
      */
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "resource_type")
-    private String resourceType;
+    private ResourceType resourceType;
 
     /**
      * 父级资源id

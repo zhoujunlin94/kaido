@@ -1,7 +1,6 @@
 package com.kaido.service.sa;
 
 import cn.dev33.satoken.stp.StpInterface;
-import cn.hutool.core.util.StrUtil;
 import com.kaido.constant.ResourceType;
 import com.kaido.repository.db.entity.base.SysResource;
 import com.kaido.repository.db.entity.base.SysRole;
@@ -36,7 +35,7 @@ public class StpInterfaceImpl implements StpInterface {
     public List<String> getPermissionList(Object loginId, String loginType) {
         Integer userId = Integer.parseInt(loginId.toString());
         List<Integer> resourceIds = sysRoleResourceHandler.getUserRoleResourceIds(userId);
-        return sysResourceHandler.getResource(resourceIds).stream().filter(resource -> StrUtil.equals(resource.getResourceType(), ResourceType.ROUTER.name()))
+        return sysResourceHandler.getResource(resourceIds).stream().filter(resource -> resource.getResourceType() == ResourceType.ROUTER)
                 .map(SysResource::getResourceCode).collect(Collectors.toList());
     }
 

@@ -1,8 +1,12 @@
 package com.kaido.service.sa.impl;
 
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.util.StrUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
+import com.kaido.constant.ResourceType;
+import com.kaido.dto.sa.SysResourceDTO;
+import com.kaido.dto.sa.SysResourcePageParamDTO;
 import com.kaido.repository.db.entity.base.SysResource;
 import com.kaido.repository.db.entity.base.SysUser;
 import com.kaido.repository.db.handler.base.SysResourceHandler;
@@ -31,14 +35,14 @@ public class SysResourceServiceImpl implements SysResourceService {
     private final SysResourceHandler sysResourceHandler;
 
     @Override
-    public List<ResourceVO> getUserRoleResources(Integer userId, String resourceType) {
+    public List<ResourceVO> getUserRoleResources(Integer userId, ResourceType resourceType) {
         SysUser sysUser = sysUserHandler.selectByPrimaryKey(userId);
         if (Objects.isNull(sysUser) || !sysUser.getUserStatus()) {
             return Lists.newArrayList();
         }
         List<Integer> resourceIds = sysRoleResourceHandler.getUserRoleResourceIds(userId);
         List<SysResource> resources = sysResourceHandler.getResource(resourceIds).stream()
-                .filter(resource -> StrUtil.equals(resource.getResourceType(), resourceType)).collect(Collectors.toList());
+                .filter(resource -> resource.getResourceType() == resourceType).collect(Collectors.toList());
         // 目前只支持两级
         List<SysResource> rootResources = resources.stream().filter(resource -> resource.getResourceParent() == 0).collect(Collectors.toList());
 
@@ -49,5 +53,40 @@ public class SysResourceServiceImpl implements SysResourceService {
         });
         return resultRootResources;
     }
+
+    // ====================== CRUD ====================
+
+    @Override
+    public boolean create(SysResourceDTO resourceDTO, Integer loginUserId) {
+        SysResource entity = BeanUtil.toBean(resourceDTO, SysResource.class);
+        entity.setCreatedBy(loginUserId);
+        entity.setUpdatedBy(loginUserId);
+        return sysResourceHandler.insertSelective(entity) > 0;
+    }
+
+    @Override
+    public boolean updateResourceStatus(SysResourceDTO resourceDTO, Integer loginUserId) {
+        SysResource entity = SysResource.builder().id(resourceDTO.getId()).resourceStatus(resourceDTO.getResourceStatus()).updatedBy(loginUserId).build();
+        return sysResourceHandler.updateByPrimaryKeySelective(entity) > 0;
+    }
+
+    @Override
+    public boolean update(SysResourceDTO resourceDTO, Integer loginUserId) {
+        SysResource entity = BeanUtil.toBean(resourceDTO, SysResource.class);
+        entity.setUpdatedBy(loginUserId);
+        return sysResourceHandler.updateByPrimaryKeySelective(entity) > 0;
+    }
+
+    @Override
+    public PageInfo<SysResourceDTO> page(SysResourcePageParamDTO paramDTO) {
+        PageInfo<SysResource> entityPageInfo = PageHelper.startPage(paramDTO.getPageNo(), paramDTO.getPageSize())
+                .doSelectPageInfo(() -> sysResourceHandler.selectByParam(paramDTO));
+        PageInfo<SysResourceDTO> retPageInfo = new PageInfo<>();
+        BeanUtil.copyProperties(entityPageInfo, retPageInfo);
+        retPageInfo.setList(entityPageInfo.getList().stream().map(entity -> BeanUtil.toBean(entity, SysResourceDTO.class)).collect(Collectors.toList()));
+        return retPageInfo;
+    }
+
+    // ====================== CRUD ====================
 
 }
