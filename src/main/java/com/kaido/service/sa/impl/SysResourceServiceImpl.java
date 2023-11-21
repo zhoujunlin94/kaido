@@ -1,6 +1,7 @@
 package com.kaido.service.sa.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -43,15 +44,19 @@ public class SysResourceServiceImpl implements SysResourceService {
         List<Integer> resourceIds = sysRoleResourceHandler.getUserRoleResourceIds(userId);
         List<SysResource> resources = sysResourceHandler.getResource(resourceIds).stream()
                 .filter(resource -> resource.getResourceType() == resourceType).collect(Collectors.toList());
-        // 目前只支持两级
-        List<SysResource> rootResources = resources.stream().filter(resource -> resource.getResourceParent() == 0).collect(Collectors.toList());
+        List<ResourceVO> allResources = BeanUtil.copyToList(resources, ResourceVO.class);
+        return dealLevelRelation(allResources.stream().filter(item -> item.getResourceParent() == 0).collect(Collectors.toList()), allResources);
+    }
 
-        List<ResourceVO> resultRootResources = BeanUtil.copyToList(rootResources, ResourceVO.class);
-        resultRootResources.forEach(root -> {
-            List<SysResource> childrenResources = resources.stream().filter(resource -> resource.getResourceParent().equals(root.getId())).collect(Collectors.toList());
-            root.setChildren(BeanUtil.copyToList(childrenResources, ResourceVO.class));
-        });
-        return resultRootResources;
+    private static List<ResourceVO> dealLevelRelation(List<ResourceVO> parentResources, List<ResourceVO> allResources) {
+        for (ResourceVO parent : parentResources) {
+            List<ResourceVO> children = allResources.stream().filter(item -> item.getResourceParent().equals(parent.getId())).collect(Collectors.toList());
+            parent.setChildren(children);
+            if (CollUtil.isNotEmpty(children)) {
+                dealLevelRelation(children, allResources);
+            }
+        }
+        return parentResources;
     }
 
     // ====================== CRUD ====================
