@@ -19,7 +19,7 @@ import java.util.List;
  * @desc
  */
 @Configuration
-public class WebMVCConfiguration implements WebMvcConfigurer {
+public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Resource
     private HttpBaseInterceptor httpBaseInterceptor;
@@ -30,9 +30,9 @@ public class WebMVCConfiguration implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         // 基础http请求拦截器
         registry.addInterceptor(httpBaseInterceptor)
-                .excludePathPatterns("/favicon.ico", "/assets/**/*")
+                .excludePathPatterns("/favicon.ico", "/assets/**/*", "/**/*.js", "/**/*.html")
                 .excludePathPatterns("/swagger-resources", "/v2/api-docs")
-                .excludePathPatterns("/**/*.js", "/**/*.html");
+        ;
 
         // sa-token拦截器
         registry.addInterceptor(new SaInterceptor(handler -> {

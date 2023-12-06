@@ -7,8 +7,10 @@ package com.kaido.constant;
  */
 public class Constant {
 
-    public static Integer EFFECT = 1;
+    public static final Integer EFFECT = 1;
 
-    public static Integer IN_VALID = 0;
+    public static final Integer IN_VALID = 0;
+
+    public static final String BIZ_CONTROLLER_PACKAGE = "com.kaido.controller";
 
 }

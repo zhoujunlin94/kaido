@@ -1,5 +1,6 @@
 package com.kaido.app.advice;
 
+import com.kaido.constant.Constant;
 import com.kaido.internal.exception.CommonErrorCode;
 import com.kaido.internal.web.dto.JSONResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +15,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 @Slf4j
 @RestControllerAdvice(
-        basePackages = {"com.kaido.controller"}
+        basePackages = {Constant.BIZ_CONTROLLER_PACKAGE}
 )
 public class GlobalResponseBodyAdvice implements ResponseBodyAdvice<Object> {
 

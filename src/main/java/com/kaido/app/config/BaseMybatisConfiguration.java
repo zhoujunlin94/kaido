@@ -21,30 +21,34 @@ import tk.mybatis.spring.annotation.MapperScan;
  * @date 2023/03/27
  **/
 @Configuration
-@MapperScan(basePackages = "com.kaido.repository.db.mapper.base", annotationClass = Mapper.class,
-        sqlSessionFactoryRef = "baseSqlSessionFactory")
+@MapperScan(basePackages = BaseMybatisConfiguration.MAPPER_PACKAGE, annotationClass = Mapper.class,
+        sqlSessionFactoryRef = BaseMybatisConfiguration.SQL_SESSION_FACTORY)
 @ConditionalOnClass({SqlSessionFactory.class, SqlSessionFactoryBean.class})
 public class BaseMybatisConfiguration extends AbstractMybatisConfig {
 
-    public static final String DATA_SOURCE_PROPERTIES = "baseDataSourceProperties";
-    public static final String DATA_SOURCE = "baseDataSource";
+    public static final String MAPPER_PACKAGE = "com.kaido.repository.db.mapper.base";
     public static final String SQL_SESSION_FACTORY = "baseSqlSessionFactory";
-    public static final String TRANSACTION_MANAGER = "baseTransactionManager";
 
-    private static final String MAPPER_LOCATION = "classpath*:mybatis/base/*.xml";
+    private static final String DATA_SOURCE_PROPERTIES_BEAN = "baseDataSourceProperties";
+    private static final String DATA_SOURCE_PROPERTIES_PREFIX = "spring.datasource.base";
+    private static final String DATA_SOURCE = "baseDataSource";
+    private static final String DATA_SOURCE_HIKARI_PREFIX = "spring.datasource.base.hikari";
+    private static final String TRANSACTION_MANAGER = "baseTransactionManager";
+
+    private static final String MAPPER_XML_LOCATION = "classpath*:mybatis/base/*.xml";
     private static final String TYPE_ALIASES_PACKAGE = "com.kaido.repository.db.entity.base";
 
     @Override
-    @Bean(DATA_SOURCE_PROPERTIES)
-    @ConfigurationProperties("spring.datasource.base")
+    @Bean(DATA_SOURCE_PROPERTIES_BEAN)
+    @ConfigurationProperties(DATA_SOURCE_PROPERTIES_PREFIX)
     protected DataSourceProperties dataSourceProperties() {
         return new DataSourceProperties();
     }
 
     @Override
     @Bean(DATA_SOURCE)
-    @ConfigurationProperties(prefix = "spring.datasource.base.hikari")
-    public HikariDataSource dataSource(@Autowired @Qualifier(DATA_SOURCE_PROPERTIES) DataSourceProperties dataSourceProperties) {
+    @ConfigurationProperties(prefix = DATA_SOURCE_HIKARI_PREFIX)
+    public HikariDataSource dataSource(@Autowired @Qualifier(DATA_SOURCE_PROPERTIES_BEAN) DataSourceProperties dataSourceProperties) {
         return dataSourceProperties.initializeDataSourceBuilder().type(HikariDataSource.class).build();
     }
 
@@ -62,7 +66,7 @@ public class BaseMybatisConfiguration extends AbstractMybatisConfig {
 
     @Override
     public String getMapperLocation() {
-        return MAPPER_LOCATION;
+        return MAPPER_XML_LOCATION;
     }
 
     @Override

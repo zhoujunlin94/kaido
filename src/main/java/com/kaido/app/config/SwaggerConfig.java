@@ -2,6 +2,7 @@ package com.kaido.app.config;
 
 import cn.hutool.core.util.StrUtil;
 import com.github.xiaoymin.knife4j.spring.annotations.EnableKnife4j;
+import com.kaido.constant.Constant;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.CorsEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.endpoint.web.WebEndpointProperties;
 import org.springframework.boot.actuate.autoconfigure.web.server.ManagementPortType;
@@ -44,7 +45,7 @@ public class SwaggerConfig {
         return new Docket(DocumentationType.SWAGGER_2).apiInfo(apiInfo())
                 .enable(true).select()
                 //这里指定扫描包路径
-                .apis(RequestHandlerSelectors.basePackage("com.kaido.controller"))
+                .apis(RequestHandlerSelectors.basePackage(Constant.BIZ_CONTROLLER_PACKAGE))
                 .paths(PathSelectors.any())
                 .build()
                 .pathMapping("/");
@@ -53,7 +54,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("kaido")
-                .description("kaido by springboot2.6.11")
+                .description("kaido by springboot 2.6.11")
                 .contact(new Contact("zhoujunlin", "https://gitee.com/zhoujunlin", "zhoujunlin.work@outlook.com"))
                 .version("1.0.0")
                 .build();
