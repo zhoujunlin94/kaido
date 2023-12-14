@@ -23,6 +23,8 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
 
+        <meet-component.version>1.0-SNAPSHOT</meet-component.version>
+
         <lombok.version>1.18.24</lombok.version>
         <slf4j.version>1.7.25</slf4j.version>
 
@@ -42,8 +44,6 @@
         <okhttp3.version>4.10.0</okhttp3.version>
         <openfeign.version>11.0</openfeign.version>
 
-        <redisson.version>3.18.0</redisson.version>
-
         <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
         <mybatis.version>2.2.2</mybatis.version>
         <mybatis.ehcache.version>1.1.0</mybatis.ehcache.version>
@@ -57,6 +57,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.you.meet.nice</groupId>
+            <artifactId>meet-redis</artifactId>
+            <version>${meet-component.version}</version>
+        </dependency>
+
         <!--web相关-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -71,25 +77,7 @@
             <artifactId>knife4j-spring-boot-starter</artifactId>
             <version>${knife4j.version}</version>
         </dependency>
-        <!--redis相关-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-data-redis</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-cache</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.redisson</groupId>
-            <artifactId>redisson-spring-boot-starter</artifactId>
-            <version>${redisson.version}</version>
-        </dependency>
-        <!--commons-->
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-pool2</artifactId>
-        </dependency>
+
         <dependency>
             <groupId>commons-lang</groupId>
             <artifactId>commons-lang</artifactId>
