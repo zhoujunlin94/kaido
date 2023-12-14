@@ -2,9 +2,9 @@ package com.kaido.repository.db.handler.base;
 
 import cn.hutool.core.util.StrUtil;
 import com.kaido.dto.sa.SysUserPageParamDTO;
-import com.kaido.internal.mybatis.TKHandler;
 import com.kaido.repository.db.entity.base.SysUser;
 import com.kaido.repository.db.mapper.base.SysUserMapper;
+import com.you.meet.nice.tk_mybatis.handler.TKHandler;
 import org.springframework.stereotype.Repository;
 import tk.mybatis.mapper.weekend.Weekend;
 import tk.mybatis.mapper.weekend.WeekendCriteria;

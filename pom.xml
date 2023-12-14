@@ -31,13 +31,6 @@
         <okhttp3.version>4.10.0</okhttp3.version>
         <openfeign.version>11.0</openfeign.version>
 
-        <mysql-connector-java.version>8.0.17</mysql-connector-java.version>
-        <mybatis.version>2.2.2</mybatis.version>
-        <mybatis.ehcache.version>1.1.0</mybatis.ehcache.version>
-        <tk.mybatis.version>2.0.0</tk.mybatis.version>
-        <mybatisplus.version>3.5.3.1</mybatisplus.version>
-        <pagehelper.version>5.1.11</pagehelper.version>
-
         <knife4j.version>3.0.3</knife4j.version>
 
         <sa-token.version>1.37.0</sa-token.version>
@@ -52,6 +45,11 @@
         <dependency>
             <groupId>com.you.meet.nice</groupId>
             <artifactId>meet-web</artifactId>
+            <version>${meet-component.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.you.meet.nice</groupId>
+            <artifactId>meet-tk_mybatis</artifactId>
             <version>${meet-component.version}</version>
         </dependency>
 
@@ -95,37 +93,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-        <!--mysql-->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql-connector-java.version}</version>
-            <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>${mybatis.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.mybatis.caches</groupId>
-            <artifactId>mybatis-ehcache</artifactId>
-            <version>${mybatis.ehcache.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>tk.mybatis</groupId>
-            <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>${tk.mybatis.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.pagehelper</groupId>
-            <artifactId>pagehelper</artifactId>
-            <version>${pagehelper.version}</version>
         </dependency>
 
         <!-- Sa-Token权限认证 -->

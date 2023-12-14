@@ -1,6 +1,6 @@
 package com.kaido.app.config;
 
-import com.kaido.internal.mybatis.AbstractMybatisConfig;
+import com.you.meet.nice.tk_mybatis.config.AbstractMybatisConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.SqlSessionFactory;

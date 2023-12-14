@@ -1,8 +1,8 @@
 package com.kaido.repository.db.handler.base;
 
-import com.kaido.internal.mybatis.TKHandler;
 import com.kaido.repository.db.entity.base.SysRoleResource;
 import com.kaido.repository.db.mapper.base.SysRoleResourceMapper;
+import com.you.meet.nice.tk_mybatis.handler.TKHandler;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
