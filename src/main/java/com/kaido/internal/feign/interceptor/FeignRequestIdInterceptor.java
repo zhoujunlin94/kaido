@@ -1,6 +1,6 @@
 package com.kaido.internal.feign.interceptor;
 
-import com.kaido.internal.util.RequestIdUtil;
+import com.you.meet.nice.common.util.RequestIdUtil;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.stereotype.Component;

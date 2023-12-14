@@ -1,6 +1,6 @@
 package com.kaido.dto.config;
 
-import com.kaido.internal.web.dto.PageParam;
+import com.you.meet.nice.common.pojo.PageParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

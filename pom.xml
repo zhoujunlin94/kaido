@@ -25,20 +25,7 @@
 
         <meet-component.version>1.0-SNAPSHOT</meet-component.version>
 
-        <lombok.version>1.18.24</lombok.version>
         <slf4j.version>1.7.25</slf4j.version>
-
-        <hutool.version>5.8.11</hutool.version>
-        <poi.version>5.0.0</poi.version>
-        <easyexcel.verion>3.2.0</easyexcel.verion>
-
-        <fastjson.version>1.2.83</fastjson.version>
-        <transmittable-thread-local.version>2.14.2</transmittable-thread-local.version>
-
-        <guava.version>31.1-jre</guava.version>
-
-        <commons.lang>2.6</commons.lang>
-        <commons-lang3.version>3.8.1</commons-lang3.version>
 
         <spring.cloud.openfeign.version>3.1.4</spring.cloud.openfeign.version>
         <okhttp3.version>4.10.0</okhttp3.version>
@@ -62,6 +49,11 @@
             <artifactId>meet-redis</artifactId>
             <version>${meet-component.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.you.meet.nice</groupId>
+            <artifactId>meet-web</artifactId>
+            <version>${meet-component.version}</version>
+        </dependency>
 
         <!--web相关-->
         <dependency>
@@ -78,16 +70,6 @@
             <version>${knife4j.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>${commons.lang}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>${commons-lang3.version}</version>
-        </dependency>
         <!--远程调用-->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
@@ -109,49 +91,10 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>${spring.cloud.openfeign.version}</version>
         </dependency>
-        <!--lombok以及日志-->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-        <!--工具-->
-        <dependency>
-            <groupId>cn.hutool</groupId>
-            <artifactId>hutool-all</artifactId>
-            <version>${hutool.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.poi</groupId>
-            <artifactId>poi-ooxml</artifactId>
-            <version>${poi.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>easyexcel</artifactId>
-            <version>${easyexcel.verion}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>${guava.version}</version>
-        </dependency>
-        <!--json-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>${fastjson.version}</version>
-        </dependency>
-        <!--threadlocal-->
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>transmittable-thread-local</artifactId>
-            <version>${transmittable-thread-local.version}</version>
         </dependency>
         <!--mysql-->
         <dependency>

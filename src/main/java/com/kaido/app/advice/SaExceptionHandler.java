@@ -1,7 +1,7 @@
 package com.kaido.app.advice;
 
 import cn.dev33.satoken.exception.*;
-import com.kaido.internal.web.dto.JSONResponse;
+import com.you.meet.nice.common.pojo.JsonResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -21,48 +21,48 @@ public class SaExceptionHandler {
      * 拦截：未登录异常
      */
     @ExceptionHandler(NotLoginException.class)
-    public JSONResponse handlerException(NotLoginException e) {
-        return JSONResponse.fail(e.getMessage());
+    public JsonResponse handlerException(NotLoginException e) {
+        return JsonResponse.fail(e.getMessage());
     }
 
     /**
      * 拦截：缺少权限异常
      */
     @ExceptionHandler(NotPermissionException.class)
-    public JSONResponse handlerException(NotPermissionException e) {
-        return JSONResponse.fail("缺少权限：" + e.getPermission());
+    public JsonResponse handlerException(NotPermissionException e) {
+        return JsonResponse.fail("缺少权限：" + e.getPermission());
     }
 
     /**
      * 拦截：缺少角色异常
      */
     @ExceptionHandler(NotRoleException.class)
-    public JSONResponse handlerException(NotRoleException e) {
-        return JSONResponse.fail("缺少角色：" + e.getRole());
+    public JsonResponse handlerException(NotRoleException e) {
+        return JsonResponse.fail("缺少角色：" + e.getRole());
     }
 
     /**
      * 拦截：二级认证校验失败异常
      */
     @ExceptionHandler(NotSafeException.class)
-    public JSONResponse handlerException(NotSafeException e) {
-        return JSONResponse.fail("二级认证校验失败：" + e.getService());
+    public JsonResponse handlerException(NotSafeException e) {
+        return JsonResponse.fail("二级认证校验失败：" + e.getService());
     }
 
     /**
      * 拦截：服务封禁异常
      */
     @ExceptionHandler(DisableServiceException.class)
-    public JSONResponse handlerException(DisableServiceException e) {
-        return JSONResponse.fail("当前账号 " + e.getService() + " 服务已被封禁 (level=" + e.getLevel() + ")：" + e.getDisableTime() + "秒后解封");
+    public JsonResponse handlerException(DisableServiceException e) {
+        return JsonResponse.fail("当前账号 " + e.getService() + " 服务已被封禁 (level=" + e.getLevel() + ")：" + e.getDisableTime() + "秒后解封");
     }
 
     /**
      * 拦截：Http Basic 校验失败异常
      */
     @ExceptionHandler(NotBasicAuthException.class)
-    public JSONResponse handlerException(NotBasicAuthException e) {
-        return JSONResponse.fail(e.getMessage());
+    public JsonResponse handlerException(NotBasicAuthException e) {
+        return JsonResponse.fail(e.getMessage());
     }
 
 

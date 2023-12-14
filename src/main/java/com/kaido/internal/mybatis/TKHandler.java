@@ -1,8 +1,8 @@
 package com.kaido.internal.mybatis;
 
 import cn.hutool.core.collection.CollUtil;
-import com.kaido.internal.util.ReflectUtils;
 import com.google.common.collect.Lists;
+import com.you.meet.nice.common.util.ReflectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.weekend.Weekend;

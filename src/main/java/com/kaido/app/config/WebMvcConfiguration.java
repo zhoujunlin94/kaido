@@ -3,7 +3,7 @@ package com.kaido.app.config;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
-import com.kaido.internal.web.interceptor.HttpBaseInterceptor;
+import com.you.meet.nice.web.interceptor.HttpBaseInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;

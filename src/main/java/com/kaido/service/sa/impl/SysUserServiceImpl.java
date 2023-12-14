@@ -10,10 +10,10 @@ import com.github.pagehelper.PageInfo;
 import com.kaido.dto.sa.LoginParamDTO;
 import com.kaido.dto.sa.SysUserDTO;
 import com.kaido.dto.sa.SysUserPageParamDTO;
-import com.kaido.internal.exception.MeetException;
 import com.kaido.repository.db.entity.base.SysUser;
 import com.kaido.repository.db.handler.base.SysUserHandler;
 import com.kaido.service.sa.SysUserService;
+import com.you.meet.nice.common.exception.MeetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
