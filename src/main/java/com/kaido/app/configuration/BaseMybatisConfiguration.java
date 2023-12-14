@@ -1,4 +1,4 @@
-package com.kaido.app.config;
+package com.kaido.app.configuration;
 
 import com.you.meet.nice.tk_mybatis.config.AbstractMybatisConfig;
 import com.zaxxer.hikari.HikariDataSource;

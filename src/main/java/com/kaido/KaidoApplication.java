@@ -8,6 +8,9 @@ import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import tk.mybatis.mapper.autoconfigure.MapperAutoConfiguration;
 
+/**
+ * @author zhoujunlin
+ */
 @EnableAspectJAutoProxy(exposeProxy = true)
 @SpringBootApplication(exclude = {
         /*不要mybatis自动注入 改用手动注入数据源*/

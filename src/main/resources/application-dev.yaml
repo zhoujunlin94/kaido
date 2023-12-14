@@ -2,7 +2,7 @@ spring:
   datasource:
     # 数据源-1
     base:
-      url: jdbc:mysql://124.221.56.164:3306/base?useSSL=false&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull&useUnicode=true&autoReconnect=true&failOverReadOnly=false&useAffectedRows=true
+      url: jdbc:mysql://127.0.0.1:3306/base?useSSL=false&characterEncoding=utf-8&autoReconnect=true&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull&useUnicode=true&autoReconnect=true&failOverReadOnly=false&useAffectedRows=true
       driver-class-name: com.mysql.cj.jdbc.Driver
       username: root
       password: root
@@ -10,7 +10,7 @@ spring:
       type: com.zaxxer.hikari.HikariDataSource
       # hikari连接池配置 对应 HikariConfig 配置属性类
       hikari:
-        pool-name: HikariCP-meet
+        pool-name: HikariCP-base
         #最小空闲连接数
         minimum-idle: 5
         # 空闲连接存活最大时间，默认10分钟

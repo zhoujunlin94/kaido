@@ -24,24 +24,11 @@
         <java.version>1.8</java.version>
 
         <meet-component.version>1.0-SNAPSHOT</meet-component.version>
-
-        <slf4j.version>1.7.25</slf4j.version>
-
-        <spring.cloud.openfeign.version>3.1.4</spring.cloud.openfeign.version>
-        <okhttp3.version>4.10.0</okhttp3.version>
-        <openfeign.version>11.0</openfeign.version>
-
-        <knife4j.version>3.0.3</knife4j.version>
-
         <sa-token.version>1.37.0</sa-token.version>
+
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.you.meet.nice</groupId>
-            <artifactId>meet-redis</artifactId>
-            <version>${meet-component.version}</version>
-        </dependency>
         <dependency>
             <groupId>com.you.meet.nice</groupId>
             <artifactId>meet-web</artifactId>
@@ -52,39 +39,15 @@
             <artifactId>meet-tk_mybatis</artifactId>
             <version>${meet-component.version}</version>
         </dependency>
-
-        <!--web相关-->
         <dependency>
-            <groupId>com.github.xiaoymin</groupId>
-            <artifactId>knife4j-spring-boot-starter</artifactId>
-            <version>${knife4j.version}</version>
-        </dependency>
-
-        <!--远程调用-->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>${okhttp3.version}</version>
+            <groupId>com.you.meet.nice</groupId>
+            <artifactId>meet-redis</artifactId>
+            <version>${meet-component.version}</version>
         </dependency>
         <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-okhttp</artifactId>
-            <version>${openfeign.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.openfeign</groupId>
-            <artifactId>feign-gson</artifactId>
-            <version>${openfeign.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-openfeign</artifactId>
-            <version>${spring.cloud.openfeign.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>log4j-over-slf4j</artifactId>
-            <version>${slf4j.version}</version>
+            <groupId>com.you.meet.nice</groupId>
+            <artifactId>meet-feign</artifactId>
+            <version>${meet-component.version}</version>
         </dependency>
 
         <!-- Sa-Token权限认证 -->
