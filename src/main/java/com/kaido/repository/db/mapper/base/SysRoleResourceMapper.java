@@ -11,4 +11,6 @@ public interface SysRoleResourceMapper extends tk.mybatis.mapper.common.Mapper<S
 
     List<Integer> getUserRoleResourceIds(@Param("userId") Integer userId);
 
+    int batchInsert(@Param("list") List<SysRoleResource> roleResources);
+
 }

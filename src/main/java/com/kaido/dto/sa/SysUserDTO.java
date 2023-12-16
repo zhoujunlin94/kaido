@@ -1,11 +1,14 @@
 package com.kaido.dto.sa;
 
+import com.google.common.collect.Lists;
+import com.kaido.dto.common.IdNameDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * @author zhoujunlin
@@ -32,6 +35,8 @@ public class SysUserDTO {
 
     @ApiModelProperty(value = "是否有效")
     private Boolean userStatus;
+
+    private List<IdNameDTO> userRoles = Lists.newArrayList();
 
     public void initAndCheck4Create() {
         this.id = null;

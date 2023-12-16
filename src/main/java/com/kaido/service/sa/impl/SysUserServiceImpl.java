@@ -7,17 +7,27 @@ import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.digest.DigestUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.kaido.dto.common.IdNameDTO;
 import com.kaido.dto.sa.LoginParamDTO;
 import com.kaido.dto.sa.SysUserDTO;
 import com.kaido.dto.sa.SysUserPageParamDTO;
 import com.kaido.repository.db.entity.base.SysUser;
+import com.kaido.repository.db.entity.base.SysUserRole;
+import com.kaido.repository.db.handler.base.SysRoleHandler;
 import com.kaido.repository.db.handler.base.SysUserHandler;
+import com.kaido.repository.db.handler.base.SysUserRoleHandler;
 import com.kaido.service.sa.SysUserService;
 import com.you.meet.nice.common.exception.MeetException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -29,11 +39,13 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SysUserServiceImpl implements SysUserService {
 
-    private final SysUserHandler sysUserHandler;
+    private final SysUserHandler userHandler;
+    private final SysRoleHandler roleHandler;
+    private final SysUserRoleHandler userRoleHandler;
 
     @Override
     public SaTokenInfo login(LoginParamDTO loginParam) {
-        SysUser sysUser = sysUserHandler.selectByAccountName(loginParam.getAccountName());
+        SysUser sysUser = userHandler.selectByAccountName(loginParam.getAccountName());
         if (Objects.isNull(sysUser)) {
             throw MeetException.meet("用户名或密码错误");
         }
@@ -48,35 +60,74 @@ public class SysUserServiceImpl implements SysUserService {
     // =================== CRUD ===================
 
     @Override
-    public boolean create(SysUserDTO userDTO, Integer loginUserId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void create(SysUserDTO userDTO, Integer loginUserId) {
         SysUser entity = BeanUtil.toBean(userDTO, SysUser.class);
         entity.setUserPassword(DigestUtil.md5Hex(userDTO.getUserPassword()));
         entity.setCreatedBy(loginUserId);
         entity.setUpdatedBy(loginUserId);
-        return sysUserHandler.insertSelective(entity) > 0;
+        userHandler.insertSelective(entity);
+
+        List<SysUserRole> userRoleList = userDTO.getUserRoles().stream().map(dto -> SysUserRole.builder().userId(entity.getId()).roleId(dto.getId())
+                .createdBy(loginUserId).updatedBy(loginUserId).build()).collect(Collectors.toList());
+        userRoleHandler.batchInsert(userRoleList);
     }
 
     @Override
     public boolean updateUserStatus(SysUserDTO userDTO, Integer loginUserId) {
         SysUser entity = SysUser.builder().id(userDTO.getId()).userStatus(userDTO.getUserStatus()).updatedBy(loginUserId).build();
-        return sysUserHandler.updateByPrimaryKeySelective(entity) > 0;
+        return userHandler.updateByPrimaryKeySelective(entity) > 0;
     }
 
     @Override
-    public boolean update(SysUserDTO userDTO, Integer loginUserId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void update(SysUserDTO userDTO, Integer loginUserId) {
         SysUser entity = BeanUtil.toBean(userDTO, SysUser.class);
         entity.setUserPassword(DigestUtil.md5Hex(userDTO.getUserPassword()));
         entity.setUpdatedBy(loginUserId);
-        return sysUserHandler.updateByPrimaryKeySelective(entity) > 0;
+        userHandler.updateByPrimaryKeySelective(entity);
+
+        List<SysUserRole> paramUserRoleList = userDTO.getUserRoles().stream().map(dto -> SysUserRole.builder().userId(entity.getId()).roleId(dto.getId())
+                .createdBy(loginUserId).updatedBy(loginUserId).build()).collect(Collectors.toList());
+        List<SysUserRole> dbUserRoleList = userRoleHandler.selectUserRole(entity.getId());
+
+        // 数据库存在  入参不存在  删除
+        List<Integer> deleteIds = dbUserRoleList.stream().filter(dbEntity -> !paramUserRoleList.contains(dbEntity)).map(SysUserRole::getId).collect(Collectors.toList());
+        userRoleHandler.deleteByIds(deleteIds);
+
+        // 入参存在  数据库不存在  新增
+        List<SysUserRole> insertList = paramUserRoleList.stream().filter(paramEntity -> !dbUserRoleList.contains(paramEntity)).collect(Collectors.toList());
+        userRoleHandler.batchInsert(insertList);
+
     }
 
     @Override
     public PageInfo<SysUserDTO> page(SysUserPageParamDTO paramDTO) {
+        // 分页
         PageInfo<SysUser> entityPageInfo = PageHelper.startPage(paramDTO.getPageNo(), paramDTO.getPageSize())
-                .doSelectPageInfo(() -> sysUserHandler.selectByParam(paramDTO));
+                .doSelectPageInfo(() -> userHandler.selectByParam(paramDTO));
         PageInfo<SysUserDTO> retPageInfo = new PageInfo<>();
         BeanUtil.copyProperties(entityPageInfo, retPageInfo);
-        retPageInfo.setList(entityPageInfo.getList().stream().map(entity -> BeanUtil.toBean(entity, SysUserDTO.class)).collect(Collectors.toList()));
+
+        // 获取用户下的角色
+        List<Integer> userIds = entityPageInfo.getList().stream().map(SysUser::getId).collect(Collectors.toList());
+        List<SysUserRole> userRoles = userRoleHandler.selectUserRole(userIds);
+        Map<Integer, List<Integer>> userRoleIdMap = userRoles.stream().collect(Collectors.groupingBy(SysUserRole::getUserId, Collectors.collectingAndThen(Collectors.toList(),
+                list -> list.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()))));
+        List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+        Map<Integer, IdNameDTO> roleNameMap = roleHandler.selectByIds(roleIds).stream().map(role -> new IdNameDTO(role.getId(), role.getRoleName())).collect(Collectors.toMap(IdNameDTO::getId, Function.identity()));
+        retPageInfo.setList(entityPageInfo.getList().stream().map(user -> {
+            SysUserDTO ret = BeanUtil.toBean(user, SysUserDTO.class);
+            List<Integer> thisRoleIds = userRoleIdMap.getOrDefault(user.getId(), Lists.newArrayList());
+            List<IdNameDTO> thisUserRoles = new ArrayList<>();
+            for (Integer thisRoleId : thisRoleIds) {
+                if (roleNameMap.containsKey(thisRoleId)) {
+                    thisUserRoles.add(roleNameMap.get(thisRoleId));
+                }
+            }
+            ret.setUserRoles(thisUserRoles);
+            return ret;
+        }).collect(Collectors.toList()));
         return retPageInfo;
     }
 

@@ -3,14 +3,24 @@ package com.kaido.service.sa.impl;
 import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
+import com.kaido.dto.common.IdNameDTO;
 import com.kaido.dto.sa.SysRoleDTO;
 import com.kaido.dto.sa.SysRolePageParamDTO;
 import com.kaido.repository.db.entity.base.SysRole;
+import com.kaido.repository.db.entity.base.SysRoleResource;
+import com.kaido.repository.db.handler.base.SysResourceHandler;
 import com.kaido.repository.db.handler.base.SysRoleHandler;
+import com.kaido.repository.db.handler.base.SysRoleResourceHandler;
 import com.kaido.service.sa.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
@@ -22,38 +32,81 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class SysRoleServiceImpl implements SysRoleService {
 
-    private final SysRoleHandler sysRoleHandler;
+    private final SysRoleHandler roleHandler;
+    private final SysResourceHandler resourceHandler;
+    private final SysRoleResourceHandler roleResourceHandler;
 
     // ================== CRUD =======================
 
     @Override
-    public boolean create(SysRoleDTO roleDTO, Integer loginUserId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void create(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = BeanUtil.toBean(roleDTO, SysRole.class);
         entity.setCreatedBy(loginUserId);
         entity.setUpdatedBy(loginUserId);
-        return sysRoleHandler.insertSelective(entity) > 0;
+        roleHandler.insertSelective(entity);
+
+        List<SysRoleResource> roleResourceEntityList = roleDTO.getRoleResources().stream().map(dto -> SysRoleResource.builder()
+                .roleId(entity.getId()).resourceId(dto.getId()).createdBy(loginUserId).updatedBy(loginUserId).build()).collect(Collectors.toList());
+        roleResourceHandler.batchInsert(roleResourceEntityList);
     }
 
     @Override
     public boolean updateRoleStatus(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = SysRole.builder().id(roleDTO.getId()).roleStatus(roleDTO.getRoleStatus()).updatedBy(loginUserId).build();
-        return sysRoleHandler.updateByPrimaryKeySelective(entity) > 0;
+        return roleHandler.updateByPrimaryKeySelective(entity) > 0;
     }
 
     @Override
-    public boolean update(SysRoleDTO roleDTO, Integer loginUserId) {
+    @Transactional(rollbackFor = Exception.class)
+    public void update(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = BeanUtil.toBean(roleDTO, SysRole.class);
         entity.setUpdatedBy(loginUserId);
-        return sysRoleHandler.updateByPrimaryKeySelective(entity) > 0;
+        roleHandler.updateByPrimaryKeySelective(entity);
+
+        List<SysRoleResource> paramRoleResourceList = roleDTO.getRoleResources().stream().map(dto -> SysRoleResource.builder().roleId(entity.getId()).resourceId(dto.getId())
+                .createdBy(loginUserId).updatedBy(loginUserId).build()).collect(Collectors.toList());
+        List<SysRoleResource> dbRoleResourceList = roleResourceHandler.getRoleResourceByRoleId(entity.getId());
+
+        // 数据库存在 入参不存在  删除
+        List<Integer> deleteIds = dbRoleResourceList.stream().filter(dbEntity -> !paramRoleResourceList.contains(dbEntity)).map(SysRoleResource::getId).collect(Collectors.toList());
+        roleResourceHandler.deleteByIds(deleteIds);
+
+        // 入参中存在  数据不出来  新增
+        List<SysRoleResource> insertList = paramRoleResourceList.stream().filter(paramEntity -> !dbRoleResourceList.contains(paramEntity)).collect(Collectors.toList());
+        roleResourceHandler.batchInsert(insertList);
+
     }
 
     @Override
     public PageInfo<SysRoleDTO> page(SysRolePageParamDTO pageParamDTO) {
+        // 分页获取角色
         PageInfo<SysRole> entityPageInfo = PageHelper.startPage(pageParamDTO.getPageNo(), pageParamDTO.getPageSize())
-                .doSelectPageInfo(() -> sysRoleHandler.selectByParam(pageParamDTO));
+                .doSelectPageInfo(() -> roleHandler.selectByParam(pageParamDTO));
         PageInfo<SysRoleDTO> retPageInfo = new PageInfo<>();
         BeanUtil.copyProperties(entityPageInfo, retPageInfo);
-        retPageInfo.setList(entityPageInfo.getList().stream().map(entity -> BeanUtil.toBean(entity, SysRoleDTO.class)).collect(Collectors.toList()));
+
+        // 获取角色对应资源
+        List<Integer> roleIds = entityPageInfo.getList().stream().map(SysRole::getId).collect(Collectors.toList());
+        List<SysRoleResource> roleResources = roleResourceHandler.getRoleResourceByRoleId(roleIds);
+        Map<Integer, List<Integer>> roleResourceIdMap = roleResources.stream().collect(Collectors.groupingBy(SysRoleResource::getRoleId,
+                Collectors.collectingAndThen(Collectors.toList(), list -> list.stream().map(SysRoleResource::getResourceId).collect(Collectors.toList()))));
+        List<Integer> resourceIds = roleResources.stream().map(SysRoleResource::getResourceId).collect(Collectors.toList());
+        Map<Integer, IdNameDTO> resourceNameMap = resourceHandler.getResource(resourceIds).stream().map(resource -> new IdNameDTO(resource.getId(), resource.getResourceName()))
+                .collect(Collectors.toMap(IdNameDTO::getId, Function.identity()));
+
+        retPageInfo.setList(entityPageInfo.getList().stream().map(role -> {
+            SysRoleDTO ret = BeanUtil.toBean(role, SysRoleDTO.class);
+            List<Integer> thisResourceIds = roleResourceIdMap.getOrDefault(role.getId(), Lists.newArrayList());
+            List<IdNameDTO> thisRoleResources = new ArrayList<>();
+            for (Integer thisResourceId : thisResourceIds) {
+                if (resourceNameMap.containsKey(thisResourceId)) {
+                    thisRoleResources.add(resourceNameMap.get(thisResourceId));
+                }
+            }
+            ret.setRoleResources(thisRoleResources);
+            return ret;
+        }).collect(Collectors.toList()));
         return retPageInfo;
     }
 

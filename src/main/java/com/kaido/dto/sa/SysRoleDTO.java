@@ -1,11 +1,14 @@
 package com.kaido.dto.sa;
 
+import com.google.common.collect.Lists;
+import com.kaido.dto.common.IdNameDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.util.Assert;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * @author zhoujunlin
@@ -29,6 +32,9 @@ public class SysRoleDTO {
 
     @ApiModelProperty(value = "角色状态")
     private Boolean roleStatus;
+
+    @ApiModelProperty(value = "角色资源")
+    private List<IdNameDTO> roleResources = Lists.newArrayList();
 
     public void initCreate() {
         this.id = null;

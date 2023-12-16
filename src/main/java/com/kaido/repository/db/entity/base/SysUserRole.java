@@ -1,9 +1,6 @@
 package com.kaido.repository.db.entity.base;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
@@ -19,6 +16,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"userId", "roleId"})
 @Table(name = "sys_user_role")
 public class SysUserRole implements Serializable {
     /**

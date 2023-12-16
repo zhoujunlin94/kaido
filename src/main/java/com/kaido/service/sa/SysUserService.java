@@ -15,11 +15,11 @@ public interface SysUserService {
 
     SaTokenInfo login(LoginParamDTO loginParam);
 
-    boolean create(SysUserDTO userDTO, Integer loginUserId);
+    void create(SysUserDTO userDTO, Integer loginUserId);
 
     boolean updateUserStatus(SysUserDTO userDTO, Integer loginUserId);
 
-    boolean update(SysUserDTO userDTO, Integer loginUserId);
+    void update(SysUserDTO userDTO, Integer loginUserId);
 
     PageInfo<SysUserDTO> page(SysUserPageParamDTO paramDTO);
 

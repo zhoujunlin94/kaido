@@ -11,11 +11,11 @@ import com.kaido.dto.sa.SysRolePageParamDTO;
  */
 public interface SysRoleService {
 
-    boolean create(SysRoleDTO roleDTO, Integer loginUserId);
+    void create(SysRoleDTO roleDTO, Integer loginUserId);
 
     boolean updateRoleStatus(SysRoleDTO roleDTO, Integer loginUserId);
 
-    boolean update(SysRoleDTO roleDTO, Integer loginUserId);
+    void update(SysRoleDTO roleDTO, Integer loginUserId);
 
     PageInfo<SysRoleDTO> page(SysRolePageParamDTO pageParamDTO);
 
