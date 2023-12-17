@@ -1,10 +1,8 @@
 package com.kaido;
 
 import org.mybatis.spring.boot.autoconfigure.MybatisAutoConfiguration;
-import org.redisson.spring.starter.RedissonAutoConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import tk.mybatis.mapper.autoconfigure.MapperAutoConfiguration;
 
@@ -18,8 +16,8 @@ import tk.mybatis.mapper.autoconfigure.MapperAutoConfiguration;
         MybatisAutoConfiguration.class,
 
         /*不要redis自动注入*/
-        RedisAutoConfiguration.class,
-        RedissonAutoConfiguration.class
+//        RedisAutoConfiguration.class,
+//        RedissonAutoConfiguration.class
 })
 public class KaidoApplication {
 
