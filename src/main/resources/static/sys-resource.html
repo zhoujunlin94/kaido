@@ -30,7 +30,7 @@
             </el-col>
             <el-col :span="4">
                 <el-form-item label="资源类型">
-                    <el-select v-model="queryForm.resourceType" placeholder="请选择">
+                    <el-select v-model="queryForm.resourceType" placeholder="请选择" clearable>
                         <el-option
                                 v-for="item in resourceType"
                                 :key="item.value"
@@ -42,12 +42,19 @@
             </el-col>
             <el-col :span="4">
                 <el-form-item label="父级资源">
-                    <el-input v-model="queryForm.resourceParent"></el-input>
+                    <el-select v-model="queryForm.resourceParent" placeholder="请选择" clearable>
+                        <el-option
+                                v-for="item in resourceParent"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-col>
             <el-col :span="4">
                 <el-form-item label="资源状态">
-                    <el-select v-model="queryForm.resourceStatus" placeholder="请选择">
+                    <el-select v-model="queryForm.resourceStatus" placeholder="请选择" clearable>
                         <el-option
                                 v-for="item in resourceStatus"
                                 :key="item.value"
@@ -75,9 +82,30 @@
         <el-table-column prop="id" label="id"></el-table-column>
         <el-table-column prop="resourceCode" label="资源code"></el-table-column>
         <el-table-column prop="resourceName" label="资源名"></el-table-column>
-        <el-table-column prop="resourceType" label="资源类型"></el-table-column>
-        <el-table-column prop="resourceParent" label="父级资源"></el-table-column>
-        <el-table-column prop="resourceStatus" label="资源状态"></el-table-column>
+        <el-table-column prop="resourceType" label="资源类型">
+            <template slot-scope="scope">
+                <el-select v-model="scope.row.resourceType" disabled="true">
+                    <el-option v-for="item in resourceType" :key="item.value" :label="item.label"
+                               :value="item.value"></el-option>
+                </el-select>
+            </template>
+        </el-table-column>
+        <el-table-column prop="resourceParent" label="父级资源">
+            <template slot-scope="scope">
+                <el-select v-model="scope.row.resourceParent" disabled="true">
+                    <el-option v-for="item in resourceParent" :key="item.value" :label="item.label"
+                               :value="item.value"></el-option>
+                </el-select>
+            </template>
+        </el-table-column>
+        <el-table-column prop="resourceStatus" label="资源状态">
+            <template slot-scope="scope">
+                <el-select v-model="scope.row.resourceStatus" disabled="true">
+                    <el-option v-for="item in resourceStatus" :key="item.value" :label="item.label"
+                               :value="item.value"></el-option>
+                </el-select>
+            </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="180px">
             <template slot-scope="scope">
                 <el-button type="primary" icon="el-icon-edit" size="small" circle @click="edit(scope.row)"></el-button>
@@ -107,10 +135,24 @@
                 <el-input v-model="form.resourceName"></el-input>
             </el-form-item>
             <el-form-item label="资源类型">
-                <el-input v-model="form.resourceType"></el-input>
+                <el-select v-model="form.resourceType" placeholder="请选择" clearable>
+                    <el-option
+                            v-for="item in resourceType"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="父级资源">
-                <el-input v-model="form.resourceParent"></el-input>
+                <el-select v-model="form.resourceParent" placeholder="请选择" clearable>
+                    <el-option
+                            v-for="item in resourceParent"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                    </el-option>
+                </el-select>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
