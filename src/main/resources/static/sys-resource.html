@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>服务配置信息</title>
+    <title>资源管理</title>
     <script src="./assets/js/jquery.min.js"></script>
     <script src="./assets/js/vue.js"></script>
     <script src="./assets/js/element.js"></script>
@@ -14,26 +14,50 @@
 </head>
 <body>
 <div id="app" style="width:95%; margin:0 auto">
-    <h2>服务配置信息</h2>
+    <h2>资源配置信息</h2>
 
     <el-form :model="queryForm" label-width="130px">
         <el-row>
-            <el-col :span="6">
-                <el-form-item label="key">
-                    <el-input v-model="queryForm.key"></el-input>
+            <el-col :span="4">
+                <el-form-item label="资源code">
+                    <el-input v-model="queryForm.resourceCode"></el-input>
                 </el-form-item>
             </el-col>
-            <el-col :span="6">
-                <el-form-item label="value">
-                    <el-input v-model="queryForm.value"></el-input>
+            <el-col :span="4">
+                <el-form-item label="资源名">
+                    <el-input v-model="queryForm.resourceName"></el-input>
                 </el-form-item>
             </el-col>
-            <el-col :span="6">
-                <el-form-item label="描述">
-                    <el-input v-model="queryForm.desc"></el-input>
+            <el-col :span="4">
+                <el-form-item label="资源类型">
+                    <el-select v-model="queryForm.resourceType" placeholder="请选择">
+                        <el-option
+                                v-for="item in resourceType"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :span="6">
+            <el-col :span="4">
+                <el-form-item label="父级资源">
+                    <el-input v-model="queryForm.resourceParent"></el-input>
+                </el-form-item>
+            </el-col>
+            <el-col :span="4">
+                <el-form-item label="资源状态">
+                    <el-select v-model="queryForm.resourceStatus" placeholder="请选择">
+                        <el-option
+                                v-for="item in resourceStatus"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+            </el-col>
+            <el-col :span="4">
                 <el-form-item>
                     <el-button type="primary" @click="loadTable(1)">查询</el-button>
                     <el-button @click="resetQueryForm">重置</el-button>
@@ -49,14 +73,14 @@
 
     <el-table :data="pageInfo.list" stripe border style="width: 100%">
         <el-table-column prop="id" label="id"></el-table-column>
-        <el-table-column prop="key" label="key"></el-table-column>
-        <el-table-column prop="value" label="value"></el-table-column>
-        <el-table-column prop="desc" label="描述"></el-table-column>
+        <el-table-column prop="resourceCode" label="资源code"></el-table-column>
+        <el-table-column prop="resourceName" label="资源名"></el-table-column>
+        <el-table-column prop="resourceType" label="资源类型"></el-table-column>
+        <el-table-column prop="resourceParent" label="父级资源"></el-table-column>
+        <el-table-column prop="resourceStatus" label="资源状态"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180px">
             <template slot-scope="scope">
                 <el-button type="primary" icon="el-icon-edit" size="small" circle @click="edit(scope.row)"></el-button>
-                <el-button type="danger" icon="el-icon-delete" size="small" circle
-                           @click="del(scope.row.id)"></el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -74,16 +98,19 @@
         </el-pagination>
     </el-row>
 
-    <el-dialog title="服务配置信息" :visible.sync="dialogVisible" width="50%">
+    <el-dialog title="资源配置信息" :visible.sync="dialogVisible" width="50%">
         <el-form ref="form" :model="form" label-width="100px">
-            <el-form-item label="key">
-                <el-input v-model="form.key" placeholder="配置key"></el-input>
+            <el-form-item label="资源code">
+                <el-input v-model="form.resourceCode"></el-input>
             </el-form-item>
-            <el-form-item label="value">
-                <el-input v-model="form.value" placeholder="配置value"></el-input>
+            <el-form-item label="资源名">
+                <el-input v-model="form.resourceName"></el-input>
             </el-form-item>
-            <el-form-item label="描述">
-                <el-input v-model="form.desc"></el-input>
+            <el-form-item label="资源类型">
+                <el-input v-model="form.resourceType"></el-input>
+            </el-form-item>
+            <el-form-item label="父级资源">
+                <el-input v-model="form.resourceParent"></el-input>
             </el-form-item>
         </el-form>
         <span slot="footer" class="dialog-footer">
@@ -103,14 +130,39 @@
             pageSize: 10,
             dialogVisible: false,
             form: {},
-            queryForm: {}
+            queryForm: {},
+            resourceStatus: [
+                {"label": "启用", "value": 1},
+                {"label": "禁用", "value": 0}
+            ],
+            resourceType: [
+                {"label": "菜单", "value": "MENU"},
+                {"label": "路由", "value": "ROUTER"},
+                {"label": "按钮", "value": "BUTTON"}
+            ],
+            resourceParent: []
         },
 
         created() {
+            this.getResourceParents();
             this.loadTable(this.pageNum);
         },
 
         methods: {
+            getResourceParents() {
+                let pageQuery = {
+                    "pageNo": 1,
+                    "pageSize": 1000,
+                    "resourceParent": 0,
+                    "resourceStatus": true
+                }
+                page('/api/sa/resource/page', pageQuery, this.setResourceParent, this.$message)
+            },
+
+            setResourceParent(pageInfo) {
+                this.resourceParent = pageInfo.getList().map(item => ({"label": item.resourceName, "value": item.id}))
+            },
+
             resetQueryForm() {
                 this.queryForm = {}
             },
@@ -120,11 +172,13 @@
                 let pageQuery = {
                     "pageNo": num,
                     "pageSize": this.pageSize,
-                    "key": this.queryForm.key,
-                    "value": this.queryForm.value,
-                    "desc": this.queryForm.desc
+                    "resourceCode": this.queryForm.resourceCode,
+                    "resourceName": this.queryForm.resourceName,
+                    "resourceType": this.queryForm.resourceType,
+                    "resourceParent": this.queryForm.resourceParent,
+                    "resourceStatus": this.queryForm.resourceStatus
                 }
-                page('/api/cache-cfg/page', pageQuery, this.setPageInfo, this.$message)
+                page('/api/sa/resource/page', pageQuery, this.setPageInfo, this.$message)
             },
 
             setPageInfo(pageInfo) {
@@ -147,7 +201,7 @@
             },
 
             save() {
-                save(this.form, '/api/cache-cfg/update', '/api/cache-cfg/add', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
+                save(this.form, '/api/sa/resource/update', '/api/sa/resource/create', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
             },
 
             updateSuccessCallback() {
@@ -158,27 +212,8 @@
             insertSuccessCallback() {
                 this.dialogVisible = false;
                 this.loadTable(1)
-            },
-
-            del(id) {
-                this.$confirm('此操作将永久删除该数据, 是否继续?', '警告', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
-                    del(id, this.delSuccessCallback, this.$message)
-                }).catch(() => {
-                    // this.$message({
-                    //     showClose: true,
-                    //     message: "已取消删除",
-                    //     type: 'info'
-                    // });
-                });
-            },
-
-            delSuccessCallback() {
-                this.loadTable(this.pageNum)
             }
+
         }
     })
 </script>

@@ -24,6 +24,9 @@ public class SysResourcePageParamDTO extends PageParam {
     @ApiModelProperty(value = "资源类型 菜单、按钮、路由")
     private ResourceType resourceType;
 
+    @ApiModelProperty(value = "父级资源id")
+    private Integer resourceParent;
+
     @ApiModelProperty(value = "资源状态")
     private Boolean resourceStatus;
 

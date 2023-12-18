@@ -40,6 +40,9 @@ public class SysResourceHandler extends TKHandler<SysResourceMapper, SysResource
         if (Objects.nonNull(paramDTO.getResourceType())) {
             weekendCriteria.andEqualTo(SysResource::getResourceType, paramDTO.getResourceType());
         }
+        if (Objects.nonNull(paramDTO.getResourceParent())) {
+            weekendCriteria.andEqualTo(SysResource::getResourceParent, paramDTO.getResourceParent());
+        }
         if (Objects.nonNull(paramDTO.getResourceStatus())) {
             weekendCriteria.andEqualTo(SysResource::getResourceStatus, paramDTO.getResourceStatus());
         }
