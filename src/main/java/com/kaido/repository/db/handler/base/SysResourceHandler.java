@@ -46,6 +46,7 @@ public class SysResourceHandler extends TKHandler<SysResourceMapper, SysResource
         if (Objects.nonNull(paramDTO.getResourceStatus())) {
             weekendCriteria.andEqualTo(SysResource::getResourceStatus, paramDTO.getResourceStatus());
         }
+        weekend.orderBy("id").desc();
         return baseMapper.selectByExample(weekend);
     }
 

@@ -1,4 +1,4 @@
-const domain = "http://localhost:8090"
+const domain = "http://localhost:8490"
 
 function setToken(token) {
     localStorage.setItem("Authorization", token)
@@ -125,9 +125,9 @@ function save(formData, updateUrl, insertUrl, updateSuccessCallback, insertSucce
     }
 }
 
-function del(id, delSuccessCallback, toast) {
+function del(deleteUrl, delSuccessCallback, toast) {
     $.ajax({
-        url: domain + '/api/cache-cfg/delete?id=' + id,
+        url: domain + deleteUrl,
         type: 'post',
         contentType: 'application/json',
         headers: {

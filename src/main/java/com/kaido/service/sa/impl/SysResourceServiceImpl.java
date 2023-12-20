@@ -83,6 +83,11 @@ public class SysResourceServiceImpl implements SysResourceService {
     }
 
     @Override
+    public boolean delete(Integer resourceId) {
+        return sysResourceHandler.deleteByPrimaryKey(resourceId) == 1;
+    }
+
+    @Override
     public PageInfo<SysResourceDTO> page(SysResourcePageParamDTO paramDTO) {
         PageInfo<SysResource> entityPageInfo = PageHelper.startPage(paramDTO.getPageNo(), paramDTO.getPageSize())
                 .doSelectPageInfo(() -> sysResourceHandler.selectByParam(paramDTO));

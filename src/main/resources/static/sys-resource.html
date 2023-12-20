@@ -18,17 +18,17 @@
 
     <el-form :model="queryForm" label-width="130px">
         <el-row>
-            <el-col :span="4">
+            <el-col :span="8">
                 <el-form-item label="资源code">
                     <el-input v-model="queryForm.resourceCode"></el-input>
                 </el-form-item>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="8">
                 <el-form-item label="资源名">
                     <el-input v-model="queryForm.resourceName"></el-input>
                 </el-form-item>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="8">
                 <el-form-item label="资源类型">
                     <el-select v-model="queryForm.resourceType" placeholder="请选择" clearable>
                         <el-option
@@ -40,7 +40,9 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :span="4">
+        </el-row>
+        <el-row>
+            <el-col :span="8">
                 <el-form-item label="父级资源">
                     <el-select v-model="queryForm.resourceParent" placeholder="请选择" clearable>
                         <el-option
@@ -52,7 +54,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="8">
                 <el-form-item label="资源状态">
                     <el-select v-model="queryForm.resourceStatus" placeholder="请选择" clearable>
                         <el-option
@@ -64,7 +66,7 @@
                     </el-select>
                 </el-form-item>
             </el-col>
-            <el-col :span="4">
+            <el-col :span="8">
                 <el-form-item>
                     <el-button type="primary" @click="loadTable(1)">查询</el-button>
                     <el-button @click="resetQueryForm">重置</el-button>
@@ -79,36 +81,23 @@
     </div>
 
     <el-table :data="pageInfo.list" stripe border style="width: 100%">
-        <el-table-column prop="id" label="id"></el-table-column>
+        <el-table-column prop="id" label="id" width="80px"></el-table-column>
         <el-table-column prop="resourceCode" label="资源code"></el-table-column>
         <el-table-column prop="resourceName" label="资源名"></el-table-column>
-        <el-table-column prop="resourceType" label="资源类型">
-            <template slot-scope="scope">
-                <el-select v-model="scope.row.resourceType" disabled="true">
-                    <el-option v-for="item in resourceType" :key="item.value" :label="item.label"
-                               :value="item.value"></el-option>
-                </el-select>
-            </template>
-        </el-table-column>
-        <el-table-column prop="resourceParent" label="父级资源">
-            <template slot-scope="scope">
-                <el-select v-model="scope.row.resourceParent" disabled="true">
-                    <el-option v-for="item in resourceParent" :key="item.value" :label="item.label"
-                               :value="item.value"></el-option>
-                </el-select>
-            </template>
-        </el-table-column>
+        <el-table-column prop="resourceType" label="资源类型" :formatter="resourceTypeFormatter"></el-table-column>
+        <el-table-column prop="resourceParent" label="父级资源" :formatter="resourceParentFormatter"></el-table-column>
         <el-table-column prop="resourceStatus" label="资源状态">
             <template slot-scope="scope">
-                <el-select v-model="scope.row.resourceStatus" disabled="true">
-                    <el-option v-for="item in resourceStatus" :key="item.value" :label="item.label"
-                               :value="item.value"></el-option>
-                </el-select>
+                <el-switch v-model="scope.row.resourceStatus" @change="changeSwitch(scope.row)"
+                           active-color="#409eff"
+                           inactive-color="#DCDFE6"></el-switch>
             </template>
         </el-table-column>
-        <el-table-column fixed="right" label="操作" width="180px">
+        <el-table-column fixed="right" label="操作" width="120px">
             <template slot-scope="scope">
                 <el-button type="primary" icon="el-icon-edit" size="small" circle @click="edit(scope.row)"></el-button>
+                <el-button type="danger" icon="el-icon-delete" size="small" circle
+                           @click="del(scope.row.id)"></el-button>
             </template>
         </el-table-column>
     </el-table>
@@ -117,7 +106,7 @@
         <el-pagination
                 layout="total, sizes, prev, pager, next, jumper"
                 :page-size="pageSize"
-                :page-sizes="[10, 30, 50, 100, 200]"
+                :page-sizes="[5, 10, 50, 100, 200]"
                 :current-page="pageNum"
                 :total="pageInfo.total"
                 @prev-click="loadTable"
@@ -126,34 +115,69 @@
         </el-pagination>
     </el-row>
 
-    <el-dialog title="资源配置信息" :visible.sync="dialogVisible" width="50%">
-        <el-form ref="form" :model="form" label-width="100px">
-            <el-form-item label="资源code">
-                <el-input v-model="form.resourceCode"></el-input>
-            </el-form-item>
-            <el-form-item label="资源名">
-                <el-input v-model="form.resourceName"></el-input>
-            </el-form-item>
-            <el-form-item label="资源类型">
-                <el-select v-model="form.resourceType" placeholder="请选择" clearable>
-                    <el-option
-                            v-for="item in resourceType"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
-            <el-form-item label="父级资源">
-                <el-select v-model="form.resourceParent" placeholder="请选择" clearable>
-                    <el-option
-                            v-for="item in resourceParent"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                    </el-option>
-                </el-select>
-            </el-form-item>
+    <el-dialog title="资源配置信息" :visible.sync="dialogVisible" width="80%">
+        <el-form ref="form" :model="form" label-width="130px">
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="资源code">
+                        <el-input v-model="form.resourceCode"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="资源名">
+                        <el-input v-model="form.resourceName"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="资源类型">
+                        <el-select v-model="form.resourceType" placeholder="请选择" clearable>
+                            <el-option
+                                    v-for="item in resourceType"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="父级资源">
+                        <el-select v-model="form.resourceParent" placeholder="请选择" clearable>
+                            <el-option
+                                    v-for="item in resourceParent"
+                                    :key="item.value"
+                                    :label="item.label"
+                                    :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="资源图标">
+                        <el-input v-model="form.resourceIcon"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                    <el-form-item label="资源路径">
+                        <el-input v-model="form.resourcePath"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
+            <el-row>
+                <el-col :span="12">
+                    <el-form-item label="资源排序">
+                        <el-input v-model="form.resourceOrder"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+
         </el-form>
         <span slot="footer" class="dialog-footer">
             <el-button @click="dialogVisible = false">取 消</el-button>
@@ -174,8 +198,8 @@
             form: {},
             queryForm: {},
             resourceStatus: [
-                {"label": "启用", "value": 1},
-                {"label": "禁用", "value": 0}
+                {"label": "启用", "value": true},
+                {"label": "禁用", "value": false}
             ],
             resourceType: [
                 {"label": "菜单", "value": "MENU"},
@@ -195,14 +219,34 @@
                 let pageQuery = {
                     "pageNo": 1,
                     "pageSize": 1000,
-                    "resourceParent": 0,
-                    "resourceStatus": true
+                    "resourceParent": 0
                 }
                 page('/api/sa/resource/page', pageQuery, this.setResourceParent, this.$message)
             },
 
             setResourceParent(pageInfo) {
-                this.resourceParent = pageInfo.getList().map(item => ({"label": item.resourceName, "value": item.id}))
+                this.resourceParent = pageInfo.list.map(item => ({"label": item.resourceName, "value": item.id}))
+                this.resourceParent.unshift({"label": "无", "value": 0})
+            },
+
+            resourceTypeFormatter(row, column) {
+                const ret = this.resourceType.reduce((acc, cur) => {
+                    acc[cur.value] = cur.label;
+                    return acc;
+                }, {});
+                return ret[row.resourceType]
+            },
+
+            resourceParentFormatter(row, column) {
+                const ret = this.resourceParent.reduce((acc, cur) => {
+                    acc[cur.value] = cur.label;
+                    return acc;
+                }, {});
+                return ret[row.resourceParent]
+            },
+
+            changeSwitch(row) {
+                save(row, '/api/sa/resource/updateResourceStatus', '', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
             },
 
             resetQueryForm() {
@@ -254,6 +298,21 @@
             insertSuccessCallback() {
                 this.dialogVisible = false;
                 this.loadTable(1)
+            },
+
+            del(id) {
+                this.$confirm('此操作将永久删除该数据, 是否继续?', '警告', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    del('/api/sa/resource/delete?id=' + id, this.delSuccessCallback, this.$message)
+                }).catch(() => {
+                });
+            },
+
+            delSuccessCallback() {
+                this.loadTable(this.pageNum)
             }
 
         }

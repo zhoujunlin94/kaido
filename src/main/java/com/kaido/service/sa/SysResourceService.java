@@ -21,6 +21,8 @@ public interface SysResourceService {
 
     boolean update(SysResourceDTO resourceDTO, Integer loginUserId);
 
+    boolean delete(Integer resourceId);
+
     PageInfo<SysResourceDTO> page(SysResourcePageParamDTO paramDTO);
 
 }

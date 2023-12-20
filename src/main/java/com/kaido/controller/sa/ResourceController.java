@@ -60,6 +60,12 @@ public class ResourceController {
         return sysResourceService.update(resourceDTO, StpUtil.getLoginIdAsInt());
     }
 
+    @PostMapping("/delete")
+    @ApiOperation(value = "删除")
+    public boolean delete(@RequestParam @NotNull(message = "主键不可为空") Integer resourceId) {
+        return sysResourceService.delete(resourceId);
+    }
+
     @PostMapping("/page")
     @ApiOperation(value = "分页")
     public PageInfo<SysResourceDTO> page(@RequestBody SysResourcePageParamDTO paramDTO) {

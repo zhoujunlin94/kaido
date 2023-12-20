@@ -166,13 +166,8 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    del(id, this.delSuccessCallback, this.$message)
+                    del('/api/cache-cfg/delete?id=' + id, this.delSuccessCallback, this.$message)
                 }).catch(() => {
-                    // this.$message({
-                    //     showClose: true,
-                    //     message: "已取消删除",
-                    //     type: 'info'
-                    // });
                 });
             },
 
