@@ -38,6 +38,12 @@ public class ResourceController {
         return sysResourceService.getUserRoleResources(StpUtil.getLoginIdAsInt(), resourceType);
     }
 
+    @GetMapping("/getAllResources")
+    @ApiOperation(value = "获取所有资源")
+    public List<ResourceVO> getAllResources(@RequestParam @NotNull(message = "资源类型不可为空") ResourceType resourceType) {
+        return sysResourceService.getAllResources(resourceType);
+    }
+
     @PostMapping("/create")
     @ApiOperation(value = "创建")
     public boolean create(@RequestBody @Valid SysResourceDTO resourceDTO) {

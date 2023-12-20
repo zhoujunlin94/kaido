@@ -17,6 +17,8 @@ public interface SysRoleService {
 
     void update(SysRoleDTO roleDTO, Integer loginUserId);
 
+    boolean delete(Integer roleId);
+
     PageInfo<SysRoleDTO> page(SysRolePageParamDTO pageParamDTO);
 
 }

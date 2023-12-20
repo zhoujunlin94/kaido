@@ -70,6 +70,26 @@ function page(url, queryParam, setPageInfo, toast) {
     })
 }
 
+function get(url, queryParam, dealResult, toast) {
+    $.ajax({
+        url: domain + url,
+        type: 'get',
+        headers: {
+            "Authorization": getToken()
+        }
+    }).then(res => {
+        if (res.code === 0) {
+            dealResult(res.data)
+        } else {
+            toast({
+                showClose: true,
+                message: res.msg,
+                type: 'error'
+            })
+        }
+    })
+}
+
 function save(formData, updateUrl, insertUrl, updateSuccessCallback, insertSuccessCallback, toast) {
     let data = JSON.stringify(formData);
     if (formData.id) {

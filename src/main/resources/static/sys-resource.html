@@ -306,7 +306,7 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    del('/api/sa/resource/delete?id=' + id, this.delSuccessCallback, this.$message)
+                    del('/api/sa/resource/delete?resourceId=' + id, this.delSuccessCallback, this.$message)
                 }).catch(() => {
                 });
             },

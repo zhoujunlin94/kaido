@@ -15,6 +15,8 @@ public interface SysResourceService {
 
     List<ResourceVO> getUserRoleResources(Integer userId, ResourceType resourceType);
 
+    List<ResourceVO> getAllResources(ResourceType resourceType);
+
     boolean create(SysResourceDTO resourceDTO, Integer loginUserId);
 
     boolean updateResourceStatus(SysResourceDTO resourceDTO, Integer loginUserId);

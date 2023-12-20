@@ -39,6 +39,7 @@ public class SysRoleHandler extends TKHandler<SysRoleMapper, SysRole> {
         if (Objects.nonNull(pageParamDTO.getRoleStatus())) {
             weekendCriteria.andEqualTo(SysRole::getRoleStatus, pageParamDTO.getRoleStatus());
         }
+        weekend.orderBy("id").desc();
         return baseMapper.selectByExample(weekend);
     }
 

@@ -1,7 +1,6 @@
 package com.kaido.dto.sa;
 
 import com.google.common.collect.Lists;
-import com.kaido.dto.common.IdNameDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -34,7 +33,7 @@ public class SysRoleDTO {
     private Boolean roleStatus;
 
     @ApiModelProperty(value = "角色资源")
-    private List<IdNameDTO> roleResources = Lists.newArrayList();
+    private List<Integer> roleResources = Lists.newArrayList();
 
     public void initCreate() {
         this.id = null;

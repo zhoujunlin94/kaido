@@ -10,12 +10,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author zhoujunlin
@@ -51,6 +49,12 @@ public class RoleController {
     public void update(@RequestBody @Valid SysRoleDTO roleDTO) {
         roleDTO.initAndCheck4Update();
         sysRoleService.update(roleDTO, StpUtil.getLoginIdAsInt());
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation(value = "删除")
+    public boolean delete(@RequestParam @NotNull(message = "主键不可为空") Integer roleId) {
+        return sysRoleService.delete(roleId);
     }
 
     @PostMapping("/page")

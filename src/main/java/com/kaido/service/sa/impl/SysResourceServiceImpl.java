@@ -48,6 +48,14 @@ public class SysResourceServiceImpl implements SysResourceService {
         return dealLevelRelation(allResources.stream().filter(item -> item.getResourceParent() == 0).collect(Collectors.toList()), allResources);
     }
 
+    @Override
+    public List<ResourceVO> getAllResources(ResourceType resourceType) {
+        List<SysResource> resources = sysResourceHandler.selectAll().stream()
+                .filter(resource -> resource.getResourceType() == resourceType).collect(Collectors.toList());
+        List<ResourceVO> allResources = BeanUtil.copyToList(resources, ResourceVO.class);
+        return dealLevelRelation(allResources.stream().filter(item -> item.getResourceParent() == 0).collect(Collectors.toList()), allResources);
+    }
+
     private static List<ResourceVO> dealLevelRelation(List<ResourceVO> parentResources, List<ResourceVO> allResources) {
         for (ResourceVO parent : parentResources) {
             List<ResourceVO> children = allResources.stream().filter(item -> item.getResourceParent().equals(parent.getId())).collect(Collectors.toList());
