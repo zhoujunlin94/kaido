@@ -105,10 +105,10 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="角色资源">
-                        <el-tree v-model="form.roleResources"
-                                 :data="allResources"
+                        <el-tree :data="allResources"
                                  :props="resourceProps"
                                  node-key="id"
+                                 ref="resourceTree"
                                  show-checkbox></el-tree>
                     </el-form-item>
                 </el-col>
@@ -151,7 +151,7 @@
 
         methods: {
             getAllResources() {
-                get('/api/sa/resource/getAllResources?resourceType=MENU', '', setAllResources, this.$message)
+                get('/api/sa/resource/getAllResources?resourceType=MENU', '', this.setAllResources, this.$message)
             },
 
             setAllResources(ret) {
@@ -190,14 +190,21 @@
             add() {
                 this.form = {}
                 this.dialogVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.resourceTree.setCheckedKeys([]);
+                });
             },
 
             edit(row) {
                 this.form = row;
                 this.dialogVisible = true;
+                this.$nextTick(() => {
+                    this.$refs.resourceTree.setCheckedKeys(row.roleResources);
+                });
             },
 
             save() {
+                this.form.roleResources = this.$refs.resourceTree.getCheckedKeys();
                 save(this.form, '/api/sa/role/update', '/api/sa/role/create', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
             },
 
