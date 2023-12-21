@@ -4,6 +4,8 @@ import com.github.pagehelper.PageInfo;
 import com.kaido.dto.sa.SysRoleDTO;
 import com.kaido.dto.sa.SysRolePageParamDTO;
 
+import java.util.List;
+
 /**
  * @author zhoujunlin
  * @date 2023/11/13
@@ -20,5 +22,7 @@ public interface SysRoleService {
     boolean delete(Integer roleId);
 
     PageInfo<SysRoleDTO> page(SysRolePageParamDTO pageParamDTO);
+
+    List<SysRoleDTO> getAllRole();
 
 }

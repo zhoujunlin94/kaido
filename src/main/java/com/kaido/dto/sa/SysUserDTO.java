@@ -1,7 +1,6 @@
 package com.kaido.dto.sa;
 
 import com.google.common.collect.Lists;
-import com.kaido.dto.common.IdNameDTO;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -36,7 +35,7 @@ public class SysUserDTO {
     @ApiModelProperty(value = "是否有效")
     private Boolean userStatus;
 
-    private List<IdNameDTO> userRoles = Lists.newArrayList();
+    private List<Integer> userRoles = Lists.newArrayList();
 
     public void initAndCheck4Create() {
         this.id = null;
@@ -47,7 +46,6 @@ public class SysUserDTO {
     public void initAndCheck4Update() {
         this.userStatus = null;
         Assert.notNull(this.id, "更新时主键不可为空");
-        Assert.hasText(this.userPassword, "用户密码不能为空");
     }
 
 }

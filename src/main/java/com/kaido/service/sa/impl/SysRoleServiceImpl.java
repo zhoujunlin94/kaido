@@ -114,6 +114,12 @@ public class SysRoleServiceImpl implements SysRoleService {
         return retPageInfo;
     }
 
+    @Override
+    public List<SysRoleDTO> getAllRole() {
+        return roleHandler.selectAll().stream().filter(SysRole::getRoleStatus)
+                .map(role -> BeanUtil.toBean(role, SysRoleDTO.class)).collect(Collectors.toList());
+    }
+
     // ================== CRUD =======================
 
 }

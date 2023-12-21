@@ -86,6 +86,7 @@
         <el-table-column prop="resourceName" label="资源名"></el-table-column>
         <el-table-column prop="resourceType" label="资源类型" :formatter="resourceTypeFormatter"></el-table-column>
         <el-table-column prop="resourceParent" label="父级资源" :formatter="resourceParentFormatter"></el-table-column>
+        <el-table-column prop="resourceOrder" label="排序"></el-table-column>
         <el-table-column prop="resourceStatus" label="资源状态">
             <template slot-scope="scope">
                 <el-switch v-model="scope.row.resourceStatus" @change="changeSwitch(scope.row)"
@@ -173,7 +174,7 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="资源排序">
-                        <el-input v-model="form.resourceOrder"></el-input>
+                        <el-input-number v-model="form.resourceOrder" :min="1"></el-input-number>
                     </el-form-item>
                 </el-col>
             </el-row>

@@ -8,10 +8,10 @@ import cn.hutool.crypto.digest.DigestUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
-import com.kaido.dto.common.IdNameDTO;
 import com.kaido.dto.sa.LoginParamDTO;
 import com.kaido.dto.sa.SysUserDTO;
 import com.kaido.dto.sa.SysUserPageParamDTO;
+import com.kaido.repository.db.entity.base.SysRole;
 import com.kaido.repository.db.entity.base.SysUser;
 import com.kaido.repository.db.entity.base.SysUserRole;
 import com.kaido.repository.db.handler.base.SysRoleHandler;
@@ -68,7 +68,7 @@ public class SysUserServiceImpl implements SysUserService {
         entity.setUpdatedBy(loginUserId);
         userHandler.insertSelective(entity);
 
-        List<SysUserRole> userRoleList = userDTO.getUserRoles().stream().map(dto -> SysUserRole.builder().userId(entity.getId()).roleId(dto.getId())
+        List<SysUserRole> userRoleList = userDTO.getUserRoles().stream().map(roleId -> SysUserRole.builder().userId(entity.getId()).roleId(roleId)
                 .createdBy(loginUserId).updatedBy(loginUserId).build()).collect(Collectors.toList());
         userRoleHandler.batchInsert(userRoleList);
     }
@@ -83,11 +83,13 @@ public class SysUserServiceImpl implements SysUserService {
     @Transactional(rollbackFor = Exception.class)
     public void update(SysUserDTO userDTO, Integer loginUserId) {
         SysUser entity = BeanUtil.toBean(userDTO, SysUser.class);
-        entity.setUserPassword(DigestUtil.md5Hex(userDTO.getUserPassword()));
+        if (StrUtil.isNotBlank(userDTO.getUserPassword())) {
+            entity.setUserPassword(DigestUtil.md5Hex(userDTO.getUserPassword()));
+        }
         entity.setUpdatedBy(loginUserId);
         userHandler.updateByPrimaryKeySelective(entity);
 
-        List<SysUserRole> paramUserRoleList = userDTO.getUserRoles().stream().map(dto -> SysUserRole.builder().userId(entity.getId()).roleId(dto.getId())
+        List<SysUserRole> paramUserRoleList = userDTO.getUserRoles().stream().map(roleId -> SysUserRole.builder().userId(entity.getId()).roleId(roleId)
                 .createdBy(loginUserId).updatedBy(loginUserId).build()).collect(Collectors.toList());
         List<SysUserRole> dbUserRoleList = userRoleHandler.selectUserRole(entity.getId());
 
@@ -115,17 +117,19 @@ public class SysUserServiceImpl implements SysUserService {
         Map<Integer, List<Integer>> userRoleIdMap = userRoles.stream().collect(Collectors.groupingBy(SysUserRole::getUserId, Collectors.collectingAndThen(Collectors.toList(),
                 list -> list.stream().map(SysUserRole::getRoleId).collect(Collectors.toList()))));
         List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
-        Map<Integer, IdNameDTO> roleNameMap = roleHandler.selectByIds(roleIds).stream().map(role -> new IdNameDTO(role.getId(), role.getRoleName())).collect(Collectors.toMap(IdNameDTO::getId, Function.identity()));
+        Map<Integer, SysRole> roleMap = roleHandler.selectByIds(roleIds).stream().collect(Collectors.toMap(SysRole::getId, Function.identity()));
+
         retPageInfo.setList(entityPageInfo.getList().stream().map(user -> {
             SysUserDTO ret = BeanUtil.toBean(user, SysUserDTO.class);
             List<Integer> thisRoleIds = userRoleIdMap.getOrDefault(user.getId(), Lists.newArrayList());
-            List<IdNameDTO> thisUserRoles = new ArrayList<>();
+
+            List<Integer> thisUserRoleIds = new ArrayList<>();
             for (Integer thisRoleId : thisRoleIds) {
-                if (roleNameMap.containsKey(thisRoleId)) {
-                    thisUserRoles.add(roleNameMap.get(thisRoleId));
+                if (roleMap.containsKey(thisRoleId)) {
+                    thisUserRoleIds.add(thisRoleId);
                 }
             }
-            ret.setUserRoles(thisUserRoles);
+            ret.setUserRoles(thisUserRoleIds);
             return ret;
         }).collect(Collectors.toList()));
         return retPageInfo;

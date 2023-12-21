@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
  * @author zhoujunlin
@@ -63,5 +64,10 @@ public class RoleController {
         return sysRoleService.page(paramDTO);
     }
 
+    @GetMapping("/getAllRoles")
+    @ApiOperation(value = "获取所有角色")
+    public List<SysRoleDTO> getAllRole() {
+        return sysRoleService.getAllRole();
+    }
 
 }
