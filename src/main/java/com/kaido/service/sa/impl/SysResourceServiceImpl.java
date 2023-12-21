@@ -18,6 +18,7 @@ import com.kaido.vo.sa.ResourceVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -37,13 +38,29 @@ public class SysResourceServiceImpl implements SysResourceService {
 
     @Override
     public List<ResourceVO> getUserRoleResources(Integer userId, ResourceType resourceType) {
+        // 获取当前用户数据
         SysUser sysUser = sysUserHandler.selectByPrimaryKey(userId);
         if (Objects.isNull(sysUser) || !sysUser.getUserStatus()) {
             return Lists.newArrayList();
         }
+        // 获取用户角色下的所有资源
         List<Integer> resourceIds = sysRoleResourceHandler.getUserRoleResourceIds(userId);
+        if (CollUtil.isEmpty(resourceIds)) {
+            return Lists.newArrayList();
+        }
         List<SysResource> resources = sysResourceHandler.getResource(resourceIds).stream()
                 .filter(resource -> resource.getResourceType() == resourceType).collect(Collectors.toList());
+
+        // 获取所有父资源
+        List<SysResource> parentResources = sysResourceHandler.getResource(resources.stream().map(SysResource::getResourceParent)
+                        .filter(resourceParent -> resourceParent > 0).distinct().collect(Collectors.toList()))
+                .stream().filter(resource -> resource.getResourceType() == resourceType).collect(Collectors.toList());
+        for (SysResource parentResource : parentResources) {
+            if (!resources.contains(parentResource)) {
+                resources.add(parentResource);
+            }
+        }
+
         List<ResourceVO> allResources = BeanUtil.copyToList(resources, ResourceVO.class);
         return dealLevelRelation(allResources.stream().filter(item -> item.getResourceParent() == 0).collect(Collectors.toList()), allResources);
     }
@@ -57,8 +74,10 @@ public class SysResourceServiceImpl implements SysResourceService {
     }
 
     private static List<ResourceVO> dealLevelRelation(List<ResourceVO> parentResources, List<ResourceVO> allResources) {
+        parentResources.sort(Comparator.comparing(ResourceVO::getResourceOrder));
         for (ResourceVO parent : parentResources) {
             List<ResourceVO> children = allResources.stream().filter(item -> item.getResourceParent().equals(parent.getId())).collect(Collectors.toList());
+            children.sort(Comparator.comparing(ResourceVO::getResourceOrder));
             parent.setChildren(children);
             if (CollUtil.isNotEmpty(children)) {
                 dealLevelRelation(children, allResources);

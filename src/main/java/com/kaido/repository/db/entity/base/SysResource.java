@@ -1,10 +1,7 @@
 package com.kaido.repository.db.entity.base;
 
 import com.kaido.constant.ResourceType;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -17,6 +14,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@EqualsAndHashCode(of = {"id"})
 @Table(name = "sys_resource")
 public class SysResource implements Serializable {
     /**
