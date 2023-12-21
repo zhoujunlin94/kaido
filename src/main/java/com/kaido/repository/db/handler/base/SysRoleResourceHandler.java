@@ -31,6 +31,18 @@ public class SysRoleResourceHandler extends TKHandler<SysRoleResourceMapper, Sys
         return this.baseMapper.selectByExample(weekend);
     }
 
+    public int deleteByRoleId(Integer roleId) {
+        Weekend<SysRoleResource> weekend = thisWeekend();
+        weekend.weekendCriteria().andEqualTo(SysRoleResource::getRoleId, roleId);
+        return this.baseMapper.deleteByExample(weekend);
+    }
+
+    public int deleteByResourceId(Integer resourceId) {
+        Weekend<SysRoleResource> weekend = thisWeekend();
+        weekend.weekendCriteria().andEqualTo(SysRoleResource::getResourceId, resourceId);
+        return this.baseMapper.deleteByExample(weekend);
+    }
+
     public int batchInsert(List<SysRoleResource> roleResources) {
         return CollUtil.isEmpty(roleResources) ? 0 : this.baseMapper.batchInsert(roleResources);
     }

@@ -32,6 +32,17 @@ public class SysUserRoleHandler extends TKHandler<SysUserRoleMapper, SysUserRole
         return baseMapper.selectByExample(weekend);
     }
 
+    public int deleteByUserId(Integer userId) {
+        Weekend<SysUserRole> weekend = thisWeekend();
+        weekend.weekendCriteria().andEqualTo(SysUserRole::getUserId, userId);
+        return baseMapper.deleteByExample(weekend);
+    }
+
+    public int deleteByRoleId(Integer roleId) {
+        Weekend<SysUserRole> weekend = thisWeekend();
+        weekend.weekendCriteria().andEqualTo(SysUserRole::getRoleId, roleId);
+        return baseMapper.deleteByExample(weekend);
+    }
 
     public int batchInsert(List<SysUserRole> userRoleList) {
         return CollUtil.isEmpty(userRoleList) ? 0 : baseMapper.batchInsert(userRoleList);

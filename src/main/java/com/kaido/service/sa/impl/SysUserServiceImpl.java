@@ -104,8 +104,13 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean delete(Integer userId) {
-        return userHandler.deleteByPrimaryKey(userId) == 1;
+        if (userHandler.deleteByPrimaryKey(userId) == 1) {
+            userRoleHandler.deleteByUserId(userId);
+            return true;
+        }
+        return false;
     }
 
     @Override

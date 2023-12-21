@@ -12,6 +12,7 @@ import com.kaido.repository.db.entity.base.SysRoleResource;
 import com.kaido.repository.db.handler.base.SysResourceHandler;
 import com.kaido.repository.db.handler.base.SysRoleHandler;
 import com.kaido.repository.db.handler.base.SysRoleResourceHandler;
+import com.kaido.repository.db.handler.base.SysUserRoleHandler;
 import com.kaido.service.sa.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class SysRoleServiceImpl implements SysRoleService {
     private final SysRoleHandler roleHandler;
     private final SysResourceHandler resourceHandler;
     private final SysRoleResourceHandler roleResourceHandler;
+    private final SysUserRoleHandler userRoleHandler;
 
     // ================== CRUD =======================
 
@@ -79,8 +81,14 @@ public class SysRoleServiceImpl implements SysRoleService {
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public boolean delete(Integer roleId) {
-        return roleHandler.deleteByPrimaryKey(roleId) == 1;
+        if (roleHandler.deleteByPrimaryKey(roleId) == 1) {
+            roleResourceHandler.deleteByRoleId(roleId);
+            userRoleHandler.deleteByRoleId(roleId);
+            return true;
+        }
+        return false;
     }
 
     @Override
