@@ -109,6 +109,7 @@
                                  :props="resourceProps"
                                  node-key="id"
                                  ref="resourceTree"
+                                 highlight-current
                                  show-checkbox></el-tree>
                     </el-form-item>
                 </el-col>
@@ -189,10 +190,10 @@
 
             add() {
                 this.form = {}
-                this.dialogVisible = true;
                 this.$nextTick(() => {
                     this.$refs.resourceTree.setCheckedKeys([]);
                 });
+                this.dialogVisible = true;
             },
 
             edit(row) {
