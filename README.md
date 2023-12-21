@@ -1,3 +1,3 @@
 ###项目描述
 
-springboot项目脚手架
+自定义 springboot starter 使用实战 

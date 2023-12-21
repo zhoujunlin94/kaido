@@ -124,11 +124,9 @@
                     "value": this.queryForm.value,
                     "desc": this.queryForm.desc
                 }
-                page('/api/cache-cfg/page', pageQuery, this.setPageInfo, this.$message)
-            },
-
-            setPageInfo(pageInfo) {
-                this.pageInfo = pageInfo
+                post('/api/cache-cfg/page', pageQuery, (pageInfo) => {
+                    this.pageInfo = pageInfo
+                }, this.$message)
             },
 
             sizeChange(val) {

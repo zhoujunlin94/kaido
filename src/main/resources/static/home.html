@@ -15,7 +15,7 @@
 
 <body>
 
-<div id="main-home">
+<div id="app">
     <el-container>
         <el-header>
             <el-row>
@@ -42,7 +42,7 @@
                                 {{ item.resourceName }}
                             </template>
                             <el-menu-item v-for="child in item.children" :key="child.id" :index="child.resourcePath">
-                                {{ child.resourceName }}
+                                &nbsp;&nbsp;&nbsp;&nbsp;{{ child.resourceName }}
                             </el-menu-item>
                         </el-submenu>
                         <el-menu-item v-else-if="item.resourcePath" :index="item.resourcePath">
@@ -63,14 +63,17 @@
 
 <script>
     new Vue({
-        el: '#main-home',
+        el: '#app',
         data: {
             frameSrc: "",
             menuItems: []
         },
 
         created() {
-            loadMenu(this.setMenuItems, this.$message);
+            // 加载菜单
+            get('/api/sa/resource/getUserRoleResources?resourceType=MENU', (menuItems) => {
+                this.menuItems = menuItems;
+            }, this.$message)
         },
 
         methods: {
@@ -78,9 +81,6 @@
                 if (index) {
                     this.frameSrc = index + "?v=" + (Math.random() * 1000)
                 }
-            },
-            setMenuItems(menuItems) {
-                this.menuItems = menuItems;
             }
         }
     })
