@@ -50,14 +50,24 @@ public class SysResourceServiceImpl implements SysResourceService {
         if (CollUtil.isEmpty(resourceIds)) {
             return Lists.newArrayList();
         }
+        List<SysResource> relateResources = resourceHandler.getResource(resourceIds);
+
         List<SysResource> allResources = new ArrayList<>();
+        List<Integer> parentResourceIds = new ArrayList<>();
         // 非父资源
-        List<SysResource> childrenResources = resourceHandler.getResource(resourceIds).stream()
-                .filter(resource -> resource.getResourceType() == resourceType && resource.getResourceParent() > 0).collect(Collectors.toList());
-        CollUtil.addAll(allResources, childrenResources);
+        for (SysResource relateResource : relateResources) {
+            if (relateResource.getResourceType() == resourceType) {
+                if (relateResource.getResourceParent() > 0) {
+                    allResources.add(relateResource);
+                    parentResourceIds.add(relateResource.getResourceParent());
+                } else {
+                    parentResourceIds.add(relateResource.getId());
+                }
+            }
+        }
 
         // 获取所有父资源
-        List<SysResource> parentResources = resourceHandler.getResource(childrenResources.stream().map(SysResource::getResourceParent).distinct().collect(Collectors.toList()))
+        List<SysResource> parentResources = resourceHandler.getResource(parentResourceIds)
                 .stream().filter(resource -> resource.getResourceType() == resourceType).collect(Collectors.toList());
         CollUtil.addAll(allResources, parentResources);
 
