@@ -19,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
@@ -49,21 +50,19 @@ public class SysResourceServiceImpl implements SysResourceService {
         if (CollUtil.isEmpty(resourceIds)) {
             return Lists.newArrayList();
         }
-        List<SysResource> resources = resourceHandler.getResource(resourceIds).stream()
-                .filter(resource -> resource.getResourceType() == resourceType).collect(Collectors.toList());
+        List<SysResource> allResources = new ArrayList<>();
+        // 非父资源
+        List<SysResource> childrenResources = resourceHandler.getResource(resourceIds).stream()
+                .filter(resource -> resource.getResourceType() == resourceType && resource.getResourceParent() > 0).collect(Collectors.toList());
+        CollUtil.addAll(allResources, childrenResources);
 
         // 获取所有父资源
-        List<SysResource> parentResources = resourceHandler.getResource(resources.stream().map(SysResource::getResourceParent)
-                        .filter(resourceParent -> resourceParent > 0).distinct().collect(Collectors.toList()))
+        List<SysResource> parentResources = resourceHandler.getResource(childrenResources.stream().map(SysResource::getResourceParent).distinct().collect(Collectors.toList()))
                 .stream().filter(resource -> resource.getResourceType() == resourceType).collect(Collectors.toList());
-        for (SysResource parentResource : parentResources) {
-            if (!resources.contains(parentResource)) {
-                resources.add(parentResource);
-            }
-        }
+        CollUtil.addAll(allResources, parentResources);
 
-        List<ResourceVO> allResources = BeanUtil.copyToList(resources, ResourceVO.class);
-        return dealLevelRelation(allResources.stream().filter(item -> item.getResourceParent() == 0).collect(Collectors.toList()), allResources);
+        List<ResourceVO> retResources = BeanUtil.copyToList(allResources, ResourceVO.class);
+        return dealLevelRelation(retResources.stream().filter(item -> item.getResourceParent() == 0).collect(Collectors.toList()), retResources);
     }
 
     @Override
@@ -77,8 +76,8 @@ public class SysResourceServiceImpl implements SysResourceService {
     private static List<ResourceVO> dealLevelRelation(List<ResourceVO> parentResources, List<ResourceVO> allResources) {
         parentResources.sort(Comparator.comparing(ResourceVO::getResourceOrder));
         for (ResourceVO parent : parentResources) {
-            List<ResourceVO> children = allResources.stream().filter(item -> item.getResourceParent().equals(parent.getId())).collect(Collectors.toList());
-            children.sort(Comparator.comparing(ResourceVO::getResourceOrder));
+            List<ResourceVO> children = allResources.stream().filter(item -> item.getResourceParent().equals(parent.getId()))
+                    .sorted(Comparator.comparing(ResourceVO::getResourceOrder)).collect(Collectors.toList());
             parent.setChildren(children);
             if (CollUtil.isNotEmpty(children)) {
                 dealLevelRelation(children, allResources);
