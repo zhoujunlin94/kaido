@@ -21,6 +21,8 @@ public interface SysUserService {
 
     void update(SysUserDTO userDTO, Integer loginUserId);
 
+    boolean delete(Integer userId);
+
     PageInfo<SysUserDTO> page(SysUserPageParamDTO paramDTO);
 
 }

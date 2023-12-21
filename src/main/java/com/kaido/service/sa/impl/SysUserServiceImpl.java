@@ -104,6 +104,11 @@ public class SysUserServiceImpl implements SysUserService {
     }
 
     @Override
+    public boolean delete(Integer userId) {
+        return userHandler.deleteByPrimaryKey(userId) == 1;
+    }
+
+    @Override
     public PageInfo<SysUserDTO> page(SysUserPageParamDTO paramDTO) {
         // 分页
         PageInfo<SysUser> entityPageInfo = PageHelper.startPage(paramDTO.getPageNo(), paramDTO.getPageSize())

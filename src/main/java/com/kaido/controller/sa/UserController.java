@@ -12,12 +12,10 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 /**
  * @author zhoujunlin
@@ -65,6 +63,12 @@ public class UserController {
     public void update(@RequestBody @Valid SysUserDTO userDTO) {
         userDTO.initAndCheck4Update();
         sysUserService.update(userDTO, StpUtil.getLoginIdAsInt());
+    }
+
+    @PostMapping("/delete")
+    @ApiOperation(value = "删除")
+    public boolean delete(@RequestParam @NotNull(message = "主键不可为空") Integer userId) {
+        return sysUserService.delete(userId);
     }
 
     @PostMapping("/page")
