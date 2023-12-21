@@ -31,7 +31,7 @@
             (user_id, role_id, created_by, updated_by)
         values
         <foreach collection="list" item="item" separator=",">
-            (#{item.userId,jdbcType=INTEGER}, #{item.roleId,jdbcType=INTEGER}
+            (#{item.userId,jdbcType=INTEGER}, #{item.roleId,jdbcType=INTEGER},
                 #{item.createdBy,jdbcType=INTEGER}, #{item.updatedBy,jdbcType=INTEGER})
         </foreach>
     </insert>

@@ -113,8 +113,10 @@
             <el-row>
                 <el-col :span="12">
                     <el-form-item label="用户角色">
-                        <el-checkbox-group v-model="form.userRoles">
-                            <el-checkbox v-for="role in allRoles" :label="role.roleName" :key="role.id"></el-checkbox>
+                        <el-checkbox-group v-model="form.userRoles" @change="checkedBoxChange">
+                            <el-checkbox v-for="role in this.allRoles" :label="role.id" :key="role.id">
+                                {{role.roleName}}
+                            </el-checkbox>
                         </el-checkbox-group>
                     </el-form-item>
                 </el-col>
@@ -152,6 +154,10 @@
         },
 
         methods: {
+            checkedBoxChange() {
+                this.$forceUpdate();
+            },
+
             getAllRoles() {
                 get('/api/sa/role/getAllRoles', '', this.setAllRoles, this.$message)
             },
@@ -191,6 +197,7 @@
 
             add() {
                 this.form = {}
+                this.form.userRoles = []
                 this.dialogVisible = true;
             },
 
