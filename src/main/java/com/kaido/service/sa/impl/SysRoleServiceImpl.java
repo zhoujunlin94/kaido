@@ -42,26 +42,28 @@ public class SysRoleServiceImpl implements SysRoleService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void create(SysRoleDTO roleDTO, Integer loginUserId) {
+    public boolean create(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = BeanUtil.toBean(roleDTO, SysRole.class);
         entity.setCreatedBy(loginUserId);
         entity.setUpdatedBy(loginUserId);
-        roleHandler.insertSelective(entity);
-
-        List<SysRoleResource> roleResourceEntityList = roleDTO.getRoleResources().stream().map(resourceId -> SysRoleResource.builder()
-                .roleId(entity.getId()).resourceId(resourceId).createdBy(loginUserId).updatedBy(loginUserId).build()).collect(Collectors.toList());
-        roleResourceHandler.batchInsert(roleResourceEntityList);
+        if (roleHandler.insertSelective(entity) == 1) {
+            List<SysRoleResource> roleResourceEntityList = roleDTO.getRoleResources().stream().map(resourceId -> SysRoleResource.builder()
+                    .roleId(entity.getId()).resourceId(resourceId).createdBy(loginUserId).updatedBy(loginUserId).build()).collect(Collectors.toList());
+            roleResourceHandler.batchInsert(roleResourceEntityList);
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean updateRoleStatus(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = SysRole.builder().id(roleDTO.getId()).roleStatus(roleDTO.getRoleStatus()).updatedBy(loginUserId).build();
-        return roleHandler.updateByPrimaryKeySelective(entity) > 0;
+        return roleHandler.updateByPrimaryKeySelective(entity) == 1;
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void update(SysRoleDTO roleDTO, Integer loginUserId) {
+    public boolean update(SysRoleDTO roleDTO, Integer loginUserId) {
         SysRole entity = BeanUtil.toBean(roleDTO, SysRole.class);
         entity.setUpdatedBy(loginUserId);
         roleHandler.updateByPrimaryKeySelective(entity);
@@ -78,6 +80,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         List<SysRoleResource> insertList = paramRoleResourceList.stream().filter(paramEntity -> !dbRoleResourceList.contains(paramEntity)).collect(Collectors.toList());
         roleResourceHandler.batchInsert(insertList);
 
+        return true;
     }
 
     @Override
@@ -101,22 +104,23 @@ public class SysRoleServiceImpl implements SysRoleService {
 
         // 获取角色对应资源
         List<Integer> roleIds = entityPageInfo.getList().stream().map(SysRole::getId).collect(Collectors.toList());
-        List<SysRoleResource> roleResources = roleResourceHandler.getRoleResourceByRoleId(roleIds);
-        Map<Integer, List<Integer>> roleResourceIdMap = roleResources.stream().collect(Collectors.groupingBy(SysRoleResource::getRoleId,
+        List<SysRoleResource> roleResources = roleResourceHandler.getRoleResourceByRoleIds(roleIds);
+        Map<Integer, List<Integer>> roleResourceIdsMap = roleResources.stream().collect(Collectors.groupingBy(SysRoleResource::getRoleId,
                 Collectors.collectingAndThen(Collectors.toList(), list -> list.stream().map(SysRoleResource::getResourceId).collect(Collectors.toList()))));
         List<Integer> resourceIds = roleResources.stream().map(SysRoleResource::getResourceId).collect(Collectors.toList());
         Map<Integer, SysResource> resourceMap = resourceHandler.getResource(resourceIds).stream().collect(Collectors.toMap(SysResource::getId, Function.identity()));
 
         retPageInfo.setList(entityPageInfo.getList().stream().map(role -> {
             SysRoleDTO ret = BeanUtil.toBean(role, SysRoleDTO.class);
-            List<Integer> thisResourceIds = roleResourceIdMap.getOrDefault(role.getId(), Lists.newArrayList());
-            List<Integer> retResourceIds = new ArrayList<>();
-            for (Integer thisResourceId : thisResourceIds) {
-                if (resourceMap.containsKey(thisResourceId)) {
-                    retResourceIds.add(thisResourceId);
+            List<Integer> roleResourceIds = roleResourceIdsMap.getOrDefault(role.getId(), Lists.newArrayList());
+
+            List<Integer> thisRoleResourceIds = new ArrayList<>();
+            for (Integer thisRoleResourceId : roleResourceIds) {
+                if (resourceMap.containsKey(thisRoleResourceId)) {
+                    thisRoleResourceIds.add(thisRoleResourceId);
                 }
             }
-            ret.setRoleResources(retResourceIds);
+            ret.setRoleResources(thisRoleResourceIds);
             return ret;
         }).collect(Collectors.toList()));
         return retPageInfo;

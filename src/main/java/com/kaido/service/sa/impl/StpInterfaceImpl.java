@@ -1,4 +1,4 @@
-package com.kaido.service.sa;
+package com.kaido.service.sa.impl;
 
 import cn.dev33.satoken.stp.StpInterface;
 import com.kaido.constant.ResourceType;
@@ -45,7 +45,7 @@ public class StpInterfaceImpl implements StpInterface {
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
         Integer userId = Integer.parseInt(loginId.toString());
-        List<Integer> roleIds = sysUserRoleHandler.selectRoleIdByUserId(userId);
+        List<Integer> roleIds = sysUserRoleHandler.selectRoleIdsByUserId(userId);
         return sysRoleHandler.selectByRoleIds(roleIds).stream().map(SysRole::getRoleCode).collect(Collectors.toList());
     }
 

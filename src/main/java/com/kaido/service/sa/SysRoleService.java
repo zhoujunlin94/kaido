@@ -13,11 +13,11 @@ import java.util.List;
  */
 public interface SysRoleService {
 
-    void create(SysRoleDTO roleDTO, Integer loginUserId);
+    boolean create(SysRoleDTO roleDTO, Integer loginUserId);
 
     boolean updateRoleStatus(SysRoleDTO roleDTO, Integer loginUserId);
 
-    void update(SysRoleDTO roleDTO, Integer loginUserId);
+    boolean update(SysRoleDTO roleDTO, Integer loginUserId);
 
     boolean delete(Integer roleId);
 

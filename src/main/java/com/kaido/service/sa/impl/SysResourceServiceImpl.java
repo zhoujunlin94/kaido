@@ -103,20 +103,20 @@ public class SysResourceServiceImpl implements SysResourceService {
         SysResource entity = BeanUtil.toBean(resourceDTO, SysResource.class);
         entity.setCreatedBy(loginUserId);
         entity.setUpdatedBy(loginUserId);
-        return resourceHandler.insertSelective(entity) > 0;
+        return resourceHandler.insertSelective(entity) == 1;
     }
 
     @Override
     public boolean updateResourceStatus(SysResourceDTO resourceDTO, Integer loginUserId) {
         SysResource entity = SysResource.builder().id(resourceDTO.getId()).resourceStatus(resourceDTO.getResourceStatus()).updatedBy(loginUserId).build();
-        return resourceHandler.updateByPrimaryKeySelective(entity) > 0;
+        return resourceHandler.updateByPrimaryKeySelective(entity) == 1;
     }
 
     @Override
     public boolean update(SysResourceDTO resourceDTO, Integer loginUserId) {
         SysResource entity = BeanUtil.toBean(resourceDTO, SysResource.class);
         entity.setUpdatedBy(loginUserId);
-        return resourceHandler.updateByPrimaryKeySelective(entity) > 0;
+        return resourceHandler.updateByPrimaryKeySelective(entity) == 1;
     }
 
     @Override
@@ -135,7 +135,7 @@ public class SysResourceServiceImpl implements SysResourceService {
                 .doSelectPageInfo(() -> resourceHandler.selectByParam(paramDTO));
         PageInfo<SysResourceDTO> retPageInfo = new PageInfo<>();
         BeanUtil.copyProperties(entityPageInfo, retPageInfo);
-        retPageInfo.setList(entityPageInfo.getList().stream().map(entity -> BeanUtil.toBean(entity, SysResourceDTO.class)).collect(Collectors.toList()));
+        retPageInfo.setList(BeanUtil.copyToList(entityPageInfo.getList(), SysResourceDTO.class));
         return retPageInfo;
     }
 

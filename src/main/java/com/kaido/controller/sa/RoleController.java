@@ -32,9 +32,9 @@ public class RoleController {
 
     @PostMapping("/create")
     @ApiOperation(value = "创建")
-    public void create(@RequestBody @Valid SysRoleDTO roleDTO) {
+    public boolean create(@RequestBody @Valid SysRoleDTO roleDTO) {
         roleDTO.initCreate();
-        sysRoleService.create(roleDTO, StpUtil.getLoginIdAsInt());
+        return sysRoleService.create(roleDTO, StpUtil.getLoginIdAsInt());
     }
 
     @PostMapping("/updateRoleStatus")
@@ -47,9 +47,9 @@ public class RoleController {
 
     @PostMapping("/update")
     @ApiOperation(value = "修改")
-    public void update(@RequestBody @Valid SysRoleDTO roleDTO) {
+    public boolean update(@RequestBody @Valid SysRoleDTO roleDTO) {
         roleDTO.initAndCheck4Update();
-        sysRoleService.update(roleDTO, StpUtil.getLoginIdAsInt());
+        return sysRoleService.update(roleDTO, StpUtil.getLoginIdAsInt());
     }
 
     @PostMapping("/delete")

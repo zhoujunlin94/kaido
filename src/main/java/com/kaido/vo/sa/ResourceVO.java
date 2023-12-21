@@ -46,7 +46,4 @@ public class ResourceVO {
     @ApiModelProperty(value = "子资源")
     private List<ResourceVO> children;
 
-    public String getResourcePath() {
-        return resourcePath;
-    }
 }

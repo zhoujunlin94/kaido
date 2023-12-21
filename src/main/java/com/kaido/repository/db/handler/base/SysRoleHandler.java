@@ -3,7 +3,6 @@ package com.kaido.repository.db.handler.base;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.StrUtil;
 import com.google.common.collect.Lists;
-import com.kaido.constant.Constant;
 import com.kaido.dto.sa.SysRolePageParamDTO;
 import com.kaido.repository.db.entity.base.SysRole;
 import com.kaido.repository.db.mapper.base.SysRoleMapper;
@@ -23,7 +22,7 @@ public class SysRoleHandler extends TKHandler<SysRoleMapper, SysRole> {
             return Lists.newArrayList();
         }
         Weekend<SysRole> weekend = thisWeekend();
-        weekend.weekendCriteria().andIn(SysRole::getId, ids).andEqualTo(SysRole::getRoleStatus, Constant.EFFECT);
+        weekend.weekendCriteria().andIn(SysRole::getId, ids).andEqualTo(SysRole::getRoleStatus, Boolean.TRUE);
         return baseMapper.selectByExample(weekend);
     }
 

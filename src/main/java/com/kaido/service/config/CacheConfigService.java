@@ -13,7 +13,7 @@ public interface CacheConfigService {
 
     PageInfo<CacheConfigDTO> page(CacheConfigPageQueryDTO queryDTO);
 
-    int add(CacheConfigDTO cacheConfigDTO);
+    boolean add(CacheConfigDTO cacheConfigDTO);
 
     boolean delete(Integer id);
 

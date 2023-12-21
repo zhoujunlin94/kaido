@@ -24,7 +24,6 @@ public class SysResourceHandler extends TKHandler<SysResourceMapper, SysResource
         Weekend<SysResource> weekend = thisWeekend();
         weekend.weekendCriteria().andIn(SysResource::getId, resourceIds)
                 .andEqualTo(SysResource::getResourceStatus, Boolean.TRUE);
-        weekend.orderBy("resourceOrder").asc();
         return baseMapper.selectByExample(weekend);
     }
 

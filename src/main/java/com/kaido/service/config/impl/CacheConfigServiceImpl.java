@@ -34,10 +34,9 @@ public class CacheConfigServiceImpl implements CacheConfigService {
     }
 
     @Override
-    public int add(CacheConfigDTO cacheConfigDTO) {
+    public boolean add(CacheConfigDTO cacheConfigDTO) {
         CacheConfig model = BeanUtil.toBean(cacheConfigDTO, CacheConfig.class);
-        cacheConfigHandler.insertSelective(model);
-        return model.getId();
+        return cacheConfigHandler.insertSelective(model) == 1;
     }
 
     @Override

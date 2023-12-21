@@ -45,9 +45,9 @@ public class UserController {
 
     @PostMapping("/create")
     @ApiOperation(value = "创建")
-    public void create(@RequestBody @Valid SysUserDTO userDTO) {
+    public boolean create(@RequestBody @Valid SysUserDTO userDTO) {
         userDTO.initAndCheck4Create();
-        sysUserService.create(userDTO, StpUtil.getLoginIdAsInt());
+        return sysUserService.create(userDTO, StpUtil.getLoginIdAsInt());
     }
 
     @PostMapping("/updateUserStatus")
@@ -60,9 +60,9 @@ public class UserController {
 
     @PostMapping("/update")
     @ApiOperation(value = "修改")
-    public void update(@RequestBody @Valid SysUserDTO userDTO) {
+    public boolean update(@RequestBody @Valid SysUserDTO userDTO) {
         userDTO.initAndCheck4Update();
-        sysUserService.update(userDTO, StpUtil.getLoginIdAsInt());
+        return sysUserService.update(userDTO, StpUtil.getLoginIdAsInt());
     }
 
     @PostMapping("/delete")

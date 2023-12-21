@@ -19,10 +19,10 @@ public class SysRoleResourceHandler extends TKHandler<SysRoleResourceMapper, Sys
     }
 
     public List<SysRoleResource> getRoleResourceByRoleId(Integer roleId) {
-        return getRoleResourceByRoleId(Collections.singletonList(roleId));
+        return getRoleResourceByRoleIds(Collections.singletonList(roleId));
     }
 
-    public List<SysRoleResource> getRoleResourceByRoleId(List<Integer> roleIds) {
+    public List<SysRoleResource> getRoleResourceByRoleIds(List<Integer> roleIds) {
         if (CollUtil.isEmpty(roleIds)) {
             return Lists.newArrayList();
         }

@@ -17,7 +17,7 @@ import tk.mybatis.mapper.autoconfigure.MapperAutoConfiguration;
         MapperAutoConfiguration.class,
         MybatisAutoConfiguration.class,
 
-        /*不要redis自动注入*/
+        /*不要redis自动注入  后续使用redis功能需要删除这两行*/
         RedisAutoConfiguration.class,
         RedissonAutoConfiguration.class
 })

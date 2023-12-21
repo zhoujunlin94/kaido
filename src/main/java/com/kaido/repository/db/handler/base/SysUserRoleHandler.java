@@ -15,15 +15,15 @@ import java.util.stream.Collectors;
 @Repository
 public class SysUserRoleHandler extends TKHandler<SysUserRoleMapper, SysUserRole> {
 
-    public List<Integer> selectRoleIdByUserId(Integer userId) {
-        return selectUserRole(userId).stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
+    public List<Integer> selectRoleIdsByUserId(Integer userId) {
+        return selectUserRoles(userId).stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
     }
 
-    public List<SysUserRole> selectUserRole(Integer userId) {
-        return selectUserRole(Collections.singletonList(userId));
+    public List<SysUserRole> selectUserRoles(Integer userId) {
+        return selectUserRoles(Collections.singletonList(userId));
     }
 
-    public List<SysUserRole> selectUserRole(List<Integer> userIds) {
+    public List<SysUserRole> selectUserRoles(List<Integer> userIds) {
         if (CollUtil.isEmpty(userIds)) {
             return Lists.newArrayList();
         }
