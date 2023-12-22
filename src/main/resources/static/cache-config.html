@@ -168,6 +168,7 @@
                     type: 'warning'
                 }).then(() => {
                     post('/api/cache-cfg/delete?id=' + id, null, () => {
+                        toastMsg(this.$message, "删除成功")
                         this.loadTable(this.pageNum)
                     }, this.$message)
                 }).catch(() => {

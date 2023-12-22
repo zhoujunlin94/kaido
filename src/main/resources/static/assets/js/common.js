@@ -68,12 +68,9 @@ function get(url, callback, toast) {
 }
 
 function save(requestBody, updateUrl, insertUrl, updateSuccessCallback, insertSuccessCallback, toast) {
-    let url;
     if (requestBody.id) {
-        url = domain + updateUrl;
-        post(url, requestBody, updateSuccessCallback, toast);
+        post(updateUrl, requestBody, updateSuccessCallback, toast);
     } else {
-        url = domain + insertUrl;
-        post(url, requestBody, insertSuccessCallback, toast);
+        post(insertUrl, requestBody, insertSuccessCallback, toast);
     }
 }
