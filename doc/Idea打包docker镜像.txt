@@ -1,0 +1,8 @@
+1. Edit Configurations -> Templates -> Docker -> Add New Configuration -> DockerFile
+2. 填写Name -> Dockerfile -> Image tag -> 如果只是将镜像推送到阿里云镜像仓库,不需要勾选Run built image
+3. 最下面添加Maven Goal 输入指令（指令前不加mvn）: clean package -Dmaven.test.skip=true
+4. 配置阿里云镜像仓库服务地址
+Setting -> Docker -> Address（registry.cn-shanghai.aliyuncs.com；每个地区可能不同） -> 账号，密码 -> 测试连接 -> Apply
+5. 使用docker运行 -> 构建完镜像在镜像上方右键 -> Push Image -> 输入仓库名和镜像标签 -> OK
+
+
