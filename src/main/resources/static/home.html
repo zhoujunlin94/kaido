@@ -28,7 +28,20 @@
                     </div>
                 </el-col>
                 <el-col :span="2">
-                    <el-button type="primary" icon="el-icon-unlock" @click="logout">退出</el-button>
+                    <el-popover placement="top-start"
+                                title="用户信息"
+                                width="120"
+                                trigger="hover">
+
+                        <el-descriptions :column="1">
+                            <el-descriptions-item label="用户ID">{{ userInfo.id }}</el-descriptions-item>
+                            <el-descriptions-item label="账户">{{ userInfo.accountName }}</el-descriptions-item>
+                            <el-descriptions-item label="真实姓名">{{ userInfo.userName }}</el-descriptions-item>
+                        </el-descriptions>
+
+                        <el-button type="primary" slot="reference" icon="el-icon-user" @click="logout">退出</el-button>
+                    </el-popover>
+
                 </el-col>
             </el-row>
         </el-header>
@@ -66,13 +79,18 @@
         el: '#app',
         data: {
             frameSrc: "./index.html",
-            menuItems: []
+            menuItems: [],
+            userInfo: ""
         },
 
         created() {
             // 加载菜单
             get('/api/sa/resource/getUserRoleResources?resourceType=MENU', (menuItems) => {
                 this.menuItems = menuItems;
+            }, this.$message)
+
+            get('/api/sa/user/getLoginUser', (user) => {
+                this.userInfo = user
             }, this.$message)
         },
 

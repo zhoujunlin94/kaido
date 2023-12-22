@@ -1,7 +1,8 @@
 const domain = "http://localhost:8490"
 
 function jump2Login(code) {
-    if (code === 11012) {
+    const saCodes = [11012, 11041]
+    if (saCodes.includes(code)) {
         // token无效
         jump2Login();
     }

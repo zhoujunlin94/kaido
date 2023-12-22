@@ -43,6 +43,12 @@ public class UserController {
         StpUtil.logout();
     }
 
+    @GetMapping("/getLoginUser")
+    @ApiOperation(value = "获取登录用户信息")
+    public SysUserDTO getLoginUser() {
+        return sysUserService.getLoginUser(StpUtil.getLoginIdAsInt());
+    }
+
     @PostMapping("/create")
     @ApiOperation(value = "创建")
     public boolean create(@RequestBody @Valid SysUserDTO userDTO) {

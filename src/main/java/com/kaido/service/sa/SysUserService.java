@@ -15,6 +15,8 @@ public interface SysUserService {
 
     SaTokenInfo login(LoginParamDTO loginParam);
 
+    SysUserDTO getLoginUser(Integer loginUserId);
+
     boolean create(SysUserDTO userDTO, Integer loginUserId);
 
     boolean updateUserStatus(SysUserDTO userDTO, Integer loginUserId);

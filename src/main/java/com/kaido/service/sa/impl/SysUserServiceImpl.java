@@ -57,6 +57,14 @@ public class SysUserServiceImpl implements SysUserService {
         return StpUtil.getTokenInfo();
     }
 
+    @Override
+    public SysUserDTO getLoginUser(Integer loginUserId) {
+        SysUser entity = userHandler.selectByPrimaryKey(loginUserId);
+        SysUserDTO sysUserDTO = BeanUtil.toBean(entity, SysUserDTO.class);
+        sysUserDTO.setUserPassword(StrUtil.EMPTY);
+        return sysUserDTO;
+    }
+
     // =================== CRUD ===================
 
     @Override

@@ -43,10 +43,17 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
                             .check(r -> StpUtil.checkLogin());
 
                     // 模块权限判断
-                    SaRouter.match("/api/cache-cfg/**/*").check(r -> StpUtil.checkRoleOr("admin", "cache-cfg"));
-                    SaRouter.match("/api/sa/user/**/*").notMatch("/api/sa/user/login").check(r -> StpUtil.checkRoleOr("admin", "user"));
-                    SaRouter.match("/api/sa/role/**/*").check(r -> StpUtil.checkRoleOr("admin", "role"));
-                    SaRouter.match("/api/sa/resource/**/*").notMatch("/api/sa/resource/getUserRoleResources").check(r -> StpUtil.checkRoleOr("admin", "resource"));
+                    SaRouter.match("/api/cache-cfg/**/*")
+                            .check(r -> StpUtil.checkRoleOr("admin", "cache-cfg"));
+
+                    SaRouter.match("/api/sa/user/**/*").notMatch("/api/sa/user/login", "/api/sa/user/logout", "/api/sa/user/getLoginUser")
+                            .check(r -> StpUtil.checkRoleOr("admin", "user"));
+
+                    SaRouter.match("/api/sa/role/**/*")
+                            .check(r -> StpUtil.checkRoleOr("admin", "role"));
+
+                    SaRouter.match("/api/sa/resource/**/*").notMatch("/api/sa/resource/getUserRoleResources")
+                            .check(r -> StpUtil.checkRoleOr("admin", "resource"));
 
                 }).isAnnotation(false)
         );
