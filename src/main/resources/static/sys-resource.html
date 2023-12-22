@@ -211,23 +211,21 @@
         },
 
         created() {
-            this.getResourceParents();
+            this.setResourceParent();
             this.loadTable(this.pageNum);
         },
 
         methods: {
-            getResourceParents() {
+            setResourceParent() {
                 let pageQuery = {
                     "pageNo": 1,
                     "pageSize": 1000,
                     "resourceParent": 0
                 }
-                page('/api/sa/resource/page', pageQuery, this.setResourceParent, this.$message)
-            },
-
-            setResourceParent(pageInfo) {
-                this.resourceParent = pageInfo.list.map(item => ({"label": item.resourceName, "value": item.id}))
-                this.resourceParent.unshift({"label": "无", "value": 0})
+                post('/api/sa/resource/page', pageQuery, (pageInfo) => {
+                    this.resourceParent = pageInfo.list.map(item => ({"label": item.resourceName, "value": item.id}))
+                    this.resourceParent.unshift({"label": "无", "value": 0})
+                }, this.$message)
             },
 
             resourceTypeFormatter(row, column) {
@@ -247,7 +245,8 @@
             },
 
             changeSwitch(row) {
-                save(row, '/api/sa/resource/updateResourceStatus', '', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
+                save(row, '/api/sa/resource/updateResourceStatus', '',
+                    this.updateSuccessCallback, null, this.$message)
             },
 
             resetQueryForm() {
@@ -265,11 +264,9 @@
                     "resourceParent": this.queryForm.resourceParent,
                     "resourceStatus": this.queryForm.resourceStatus
                 }
-                page('/api/sa/resource/page', pageQuery, this.setPageInfo, this.$message)
-            },
-
-            setPageInfo(pageInfo) {
-                this.pageInfo = pageInfo
+                post('/api/sa/resource/page', pageQuery, (pageInfo) => {
+                    this.pageInfo = pageInfo
+                }, this.$message)
             },
 
             sizeChange(val) {
@@ -288,15 +285,18 @@
             },
 
             save() {
-                save(this.form, '/api/sa/resource/update', '/api/sa/resource/create', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
+                save(this.form, '/api/sa/resource/update', '/api/sa/resource/create',
+                    this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
             },
 
             updateSuccessCallback() {
+                toastMsg(this.$message, "更新成功")
                 this.dialogVisible = false;
                 this.loadTable(this.pageNum)
             },
 
             insertSuccessCallback() {
+                toastMsg(this.$message, "新增成功")
                 this.dialogVisible = false;
                 this.loadTable(1)
             },
@@ -307,15 +307,12 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    del('/api/sa/resource/delete?resourceId=' + id, this.delSuccessCallback, this.$message)
+                    post('/api/sa/resource/delete?resourceId=' + id, null, () => {
+                        this.loadTable(this.pageNum)
+                    }, this.$message)
                 }).catch(() => {
                 });
-            },
-
-            delSuccessCallback() {
-                this.loadTable(this.pageNum)
             }
-
         }
     })
 </script>

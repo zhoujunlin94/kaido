@@ -65,7 +65,7 @@
         <el-pagination
                 layout="total, sizes, prev, pager, next, jumper"
                 :page-size="pageSize"
-                :page-sizes="[10, 30, 50, 100, 200]"
+                :page-sizes="[5, 10, 50, 100, 200]"
                 :current-page="pageNum"
                 :total="pageInfo.total"
                 @prev-click="loadTable"
@@ -145,15 +145,18 @@
             },
 
             save() {
-                save(this.form, '/api/cache-cfg/update', '/api/cache-cfg/add', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
+                save(this.form, '/api/cache-cfg/update', '/api/cache-cfg/add',
+                    this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
             },
 
             updateSuccessCallback() {
+                toastMsg(this.$message, "更新成功")
                 this.dialogVisible = false;
                 this.loadTable(this.pageNum)
             },
 
             insertSuccessCallback() {
+                toastMsg(this.$message, "新增成功")
                 this.dialogVisible = false;
                 this.loadTable(1)
             },
@@ -164,13 +167,11 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    del('/api/cache-cfg/delete?id=' + id, this.delSuccessCallback, this.$message)
+                    post('/api/cache-cfg/delete?id=' + id, null, () => {
+                        this.loadTable(this.pageNum)
+                    }, this.$message)
                 }).catch(() => {
                 });
-            },
-
-            delSuccessCallback() {
-                this.loadTable(this.pageNum)
             }
         }
     })

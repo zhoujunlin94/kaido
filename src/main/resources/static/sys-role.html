@@ -146,21 +146,20 @@
         },
 
         created() {
-            this.getAllResources();
+            this.setAllResources();
             this.loadTable(this.pageNum);
         },
 
         methods: {
-            getAllResources() {
-                get('/api/sa/resource/getAllResources?resourceType=MENU', '', this.setAllResources, this.$message)
-            },
-
-            setAllResources(ret) {
-                this.allResources = ret
+            setAllResources() {
+                get('/api/sa/resource/getAllResources?resourceType=MENU', (ret) => {
+                    this.allResources = ret
+                }, this.$message)
             },
 
             changeSwitch(row) {
-                save(row, '/api/sa/role/updateRoleStatus', '', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
+                save(row, '/api/sa/role/updateRoleStatus', '',
+                    this.updateSuccessCallback, null, this.$message)
             },
 
             resetQueryForm() {
@@ -176,11 +175,9 @@
                     "roleName": this.queryForm.roleName,
                     "roleStatus": this.queryForm.roleStatus
                 }
-                page('/api/sa/role/page', pageQuery, this.setPageInfo, this.$message)
-            },
-
-            setPageInfo(pageInfo) {
-                this.pageInfo = pageInfo
+                post('/api/sa/role/page', pageQuery, (pageInfo) => {
+                    this.pageInfo = pageInfo
+                }, this.$message)
             },
 
             sizeChange(val) {
@@ -206,15 +203,18 @@
 
             save() {
                 this.form.roleResources = this.$refs.resourceTree.getCheckedKeys();
-                save(this.form, '/api/sa/role/update', '/api/sa/role/create', this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
+                save(this.form, '/api/sa/role/update', '/api/sa/role/create',
+                    this.updateSuccessCallback, this.insertSuccessCallback, this.$message)
             },
 
             updateSuccessCallback() {
+                toastMsg(this.$message, "更新成功")
                 this.dialogVisible = false;
                 this.loadTable(this.pageNum)
             },
 
             insertSuccessCallback() {
+                toastMsg(this.$message, "新增成功")
                 this.dialogVisible = false;
                 this.loadTable(1)
             },
@@ -225,13 +225,11 @@
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    del('/api/sa/role/delete?roleId=' + id, this.delSuccessCallback, this.$message)
+                    post('/api/sa/role/delete?roleId=' + id, null, () => {
+                        this.loadTable(this.pageNum)
+                    }, this.$message)
                 }).catch(() => {
                 });
-            },
-
-            delSuccessCallback() {
-                this.loadTable(this.pageNum)
             }
 
         }
