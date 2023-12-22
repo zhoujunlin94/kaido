@@ -5,4 +5,10 @@
 Setting -> Docker -> Address（registry.cn-shanghai.aliyuncs.com；每个地区可能不同） -> 账号，密码 -> 测试连接 -> Apply
 5. 使用docker运行 -> 构建完镜像在镜像上方右键 -> Push Image -> 输入仓库名和镜像标签 -> OK
 
-
+kaido应用连接mysql docker容器要使他们在一个network
+1. 新建一个network
+docker network create meet-work
+2. mysql连接meet-work
+docker network connect meet-work mysql57
+3. kaido连接meet-work
+docker network connect meet-work kaido
