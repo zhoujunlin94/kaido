@@ -3,8 +3,14 @@ const domain = "http://localhost:8490"
 function jump2Login(code) {
     if (code === 11012) {
         // token无效
-        window.location.href = domain + "/login.html";
+        jump2Login();
     }
+}
+
+function jump2Login() {
+    setTimeout(() => {
+        window.location.href = domain + "/login.html";
+    }, 500)
 }
 
 function setToken(token) {

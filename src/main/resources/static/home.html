@@ -28,7 +28,7 @@
                     </div>
                 </el-col>
                 <el-col :span="2">
-                    <el-button type="primary" icon="el-icon-unlock">退出</el-button>
+                    <el-button type="primary" icon="el-icon-unlock" @click="logout">退出</el-button>
                 </el-col>
             </el-row>
         </el-header>
@@ -81,6 +81,13 @@
                 if (index) {
                     this.frameSrc = index + "?v=" + (Math.random() * 1000)
                 }
+            },
+
+            logout() {
+                post("/api/sa/user/logout", null, () => {
+                    toastMsg(this.$message, "注销成功")
+                    jump2Login(11012)
+                }, this.$message)
             }
         }
     })
