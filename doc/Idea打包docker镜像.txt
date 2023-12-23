@@ -1,3 +1,5 @@
+mac docker安装完成之后执行  sudo ln -s ~/.docker/run/docker.sock /var/run/docker.sock
+
 1. Edit Configurations -> Templates -> Docker -> Add New Configuration -> DockerFile
 2. 填写Name -> Dockerfile -> Image tag -> 如果只是将镜像推送到阿里云镜像仓库,不需要勾选Run built image
 3. 最下面添加Maven Goal 输入指令（指令前不加mvn）: clean package -Dmaven.test.skip=true
