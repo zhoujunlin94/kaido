@@ -14,6 +14,7 @@ import com.kaido.repository.db.handler.base.SysRoleHandler;
 import com.kaido.repository.db.handler.base.SysRoleResourceHandler;
 import com.kaido.repository.db.handler.base.SysUserRoleHandler;
 import com.kaido.service.sa.SysRoleService;
+import com.you.meet.nice.tk_mybatis.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -99,8 +100,6 @@ public class SysRoleServiceImpl implements SysRoleService {
         // 分页获取角色
         PageInfo<SysRole> entityPageInfo = PageHelper.startPage(pageParamDTO.getPageNo(), pageParamDTO.getPageSize())
                 .doSelectPageInfo(() -> roleHandler.selectByParam(pageParamDTO));
-        PageInfo<SysRoleDTO> retPageInfo = new PageInfo<>();
-        BeanUtil.copyProperties(entityPageInfo, retPageInfo);
 
         // 获取角色对应资源
         List<Integer> roleIds = entityPageInfo.getList().stream().map(SysRole::getId).collect(Collectors.toList());
@@ -110,7 +109,7 @@ public class SysRoleServiceImpl implements SysRoleService {
         List<Integer> resourceIds = roleResources.stream().map(SysRoleResource::getResourceId).collect(Collectors.toList());
         Map<Integer, SysResource> resourceMap = resourceHandler.getResource(resourceIds).stream().collect(Collectors.toMap(SysResource::getId, Function.identity()));
 
-        retPageInfo.setList(entityPageInfo.getList().stream().map(role -> {
+        List<SysRoleDTO> retRoleList = entityPageInfo.getList().stream().map(role -> {
             SysRoleDTO ret = BeanUtil.toBean(role, SysRoleDTO.class);
             List<Integer> roleResourceIds = roleResourceIdsMap.getOrDefault(role.getId(), Lists.newArrayList());
 
@@ -122,8 +121,8 @@ public class SysRoleServiceImpl implements SysRoleService {
             }
             ret.setRoleResources(thisRoleResourceIds);
             return ret;
-        }).collect(Collectors.toList()));
-        return retPageInfo;
+        }).collect(Collectors.toList());
+        return PageUtil.copy(entityPageInfo, retRoleList);
     }
 
     @Override

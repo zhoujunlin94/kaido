@@ -19,6 +19,7 @@ import com.kaido.repository.db.handler.base.SysUserHandler;
 import com.kaido.repository.db.handler.base.SysUserRoleHandler;
 import com.kaido.service.sa.SysUserService;
 import com.you.meet.nice.common.exception.MeetException;
+import com.you.meet.nice.tk_mybatis.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -129,8 +130,6 @@ public class SysUserServiceImpl implements SysUserService {
         // 分页
         PageInfo<SysUser> entityPageInfo = PageHelper.startPage(paramDTO.getPageNo(), paramDTO.getPageSize())
                 .doSelectPageInfo(() -> userHandler.selectByParam(paramDTO));
-        PageInfo<SysUserDTO> retPageInfo = new PageInfo<>();
-        BeanUtil.copyProperties(entityPageInfo, retPageInfo);
 
         // 获取用户下的角色
         List<Integer> userIds = entityPageInfo.getList().stream().map(SysUser::getId).collect(Collectors.toList());
@@ -140,7 +139,7 @@ public class SysUserServiceImpl implements SysUserService {
         List<Integer> roleIds = userRoles.stream().map(SysUserRole::getRoleId).collect(Collectors.toList());
         Map<Integer, SysRole> roleMap = roleHandler.selectByRoleIds(roleIds).stream().collect(Collectors.toMap(SysRole::getId, Function.identity()));
 
-        retPageInfo.setList(entityPageInfo.getList().stream().map(user -> {
+        List<SysUserDTO> retUserList = entityPageInfo.getList().stream().map(user -> {
             SysUserDTO ret = BeanUtil.toBean(user, SysUserDTO.class);
             List<Integer> userRoleIds = userRoleIdsMap.getOrDefault(user.getId(), Lists.newArrayList());
 
@@ -153,8 +152,8 @@ public class SysUserServiceImpl implements SysUserService {
             ret.setUserRoles(thisUserRoleIds);
 
             return ret;
-        }).collect(Collectors.toList()));
-        return retPageInfo;
+        }).collect(Collectors.toList());
+        return PageUtil.copy(entityPageInfo, retUserList);
     }
 
     // =================== CRUD ===================

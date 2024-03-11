@@ -8,8 +8,8 @@ import com.kaido.dto.config.CacheConfigPageQueryDTO;
 import com.kaido.repository.db.entity.base.CacheConfig;
 import com.kaido.repository.db.handler.base.CacheConfigHandler;
 import com.kaido.service.config.CacheConfigService;
+import com.you.meet.nice.tk_mybatis.util.PageUtil;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -27,10 +27,7 @@ public class CacheConfigServiceImpl implements CacheConfigService {
     public PageInfo<CacheConfigDTO> page(CacheConfigPageQueryDTO queryDTO) {
         PageInfo<CacheConfig> modelPageInfo = PageHelper.startPage(queryDTO.getPageNo(), queryDTO.getPageSize())
                 .doSelectPageInfo(() -> cacheConfigHandler.selectByParam(queryDTO.getKey(), queryDTO.getValue(), queryDTO.getDesc()));
-        PageInfo<CacheConfigDTO> resultPageInfo = new PageInfo<>();
-        BeanUtils.copyProperties(modelPageInfo, resultPageInfo);
-        resultPageInfo.setList(BeanUtil.copyToList(modelPageInfo.getList(), CacheConfigDTO.class));
-        return resultPageInfo;
+        return PageUtil.copy(modelPageInfo, () -> BeanUtil.copyToList(modelPageInfo.getList(), CacheConfigDTO.class));
     }
 
     @Override

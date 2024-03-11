@@ -15,6 +15,7 @@ import com.kaido.repository.db.handler.base.SysRoleResourceHandler;
 import com.kaido.repository.db.handler.base.SysUserHandler;
 import com.kaido.service.sa.SysResourceService;
 import com.kaido.vo.sa.ResourceVO;
+import com.you.meet.nice.tk_mybatis.util.PageUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -133,10 +134,7 @@ public class SysResourceServiceImpl implements SysResourceService {
     public PageInfo<SysResourceDTO> page(SysResourcePageParamDTO paramDTO) {
         PageInfo<SysResource> entityPageInfo = PageHelper.startPage(paramDTO.getPageNo(), paramDTO.getPageSize())
                 .doSelectPageInfo(() -> resourceHandler.selectByParam(paramDTO));
-        PageInfo<SysResourceDTO> retPageInfo = new PageInfo<>();
-        BeanUtil.copyProperties(entityPageInfo, retPageInfo);
-        retPageInfo.setList(BeanUtil.copyToList(entityPageInfo.getList(), SysResourceDTO.class));
-        return retPageInfo;
+        return PageUtil.copy(entityPageInfo, () -> BeanUtil.copyToList(entityPageInfo.getList(), SysResourceDTO.class));
     }
 
     // ====================== CRUD ====================
