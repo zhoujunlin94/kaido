@@ -13,7 +13,7 @@ import java.util.List;
  * @desc
  */
 @Data
-@ApiModel(value = "资源信息")
+@ApiModel(description = "资源信息")
 public class ResourceVO {
 
     @ApiModelProperty(value = "权限id")
