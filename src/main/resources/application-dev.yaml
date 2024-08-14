@@ -34,6 +34,9 @@ spring:
                 helperDialect: mysql
                 reasonable: true
                 supportMethodsArguments: true
+            - clazz: io.github.zhoujunlin94.meet.tk_mybatis.interceptor.PrintSQLInterceptor
+              properties:
+                enable: true
 
   redis:
     host: localhost
@@ -68,8 +71,3 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
-
-logging:
-  level:
-    io.github.zhoujunlin94.kaido.*: debug
-  config: classpath:logback.xml

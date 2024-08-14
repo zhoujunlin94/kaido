@@ -21,7 +21,7 @@ public class SaExceptionHandler {
      * 拦截：未登录异常
      */
     @ExceptionHandler(NotLoginException.class)
-    public JsonResponse handlerException(NotLoginException e) {
+    public JsonResponse<Object> handlerException(NotLoginException e) {
         return JsonResponse.fail(e.getCode(), e.getMessage());
     }
 
@@ -29,7 +29,7 @@ public class SaExceptionHandler {
      * 拦截：缺少权限异常
      */
     @ExceptionHandler(NotPermissionException.class)
-    public JsonResponse handlerException(NotPermissionException e) {
+    public JsonResponse<Object> handlerException(NotPermissionException e) {
         return JsonResponse.fail(e.getCode(), "缺少权限：" + e.getPermission());
     }
 
@@ -37,7 +37,7 @@ public class SaExceptionHandler {
      * 拦截：缺少角色异常
      */
     @ExceptionHandler(NotRoleException.class)
-    public JsonResponse handlerException(NotRoleException e) {
+    public JsonResponse<Object> handlerException(NotRoleException e) {
         return JsonResponse.fail(e.getCode(), "缺少角色：" + e.getRole());
     }
 
@@ -45,7 +45,7 @@ public class SaExceptionHandler {
      * 拦截：二级认证校验失败异常
      */
     @ExceptionHandler(NotSafeException.class)
-    public JsonResponse handlerException(NotSafeException e) {
+    public JsonResponse<Object> handlerException(NotSafeException e) {
         return JsonResponse.fail(e.getCode(), "二级认证校验失败：" + e.getService());
     }
 
@@ -53,7 +53,7 @@ public class SaExceptionHandler {
      * 拦截：服务封禁异常
      */
     @ExceptionHandler(DisableServiceException.class)
-    public JsonResponse handlerException(DisableServiceException e) {
+    public JsonResponse<Object> handlerException(DisableServiceException e) {
         return JsonResponse.fail(e.getCode(), "当前账号 " + e.getService() + " 服务已被封禁 (level=" + e.getLevel() + ")：" + e.getDisableTime() + "秒后解封");
     }
 
@@ -61,7 +61,7 @@ public class SaExceptionHandler {
      * 拦截：Http Basic 校验失败异常
      */
     @ExceptionHandler(NotBasicAuthException.class)
-    public JsonResponse handlerException(NotBasicAuthException e) {
+    public JsonResponse<Object> handlerException(NotBasicAuthException e) {
         return JsonResponse.fail(e.getCode(), e.getMessage());
     }
 
