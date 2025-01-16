@@ -10,7 +10,7 @@ function jump2Login(code) {
 
 function jump2Login() {
     setTimeout(() => {
-        window.location.href = domain + "/login.html";
+        top.location.href = domain + "/login.html";
     }, 500)
 }
 
