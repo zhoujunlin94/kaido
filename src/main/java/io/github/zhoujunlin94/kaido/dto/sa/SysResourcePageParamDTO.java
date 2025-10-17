@@ -2,8 +2,7 @@ package io.github.zhoujunlin94.kaido.dto.sa;
 
 import io.github.zhoujunlin94.kaido.constant.ResourceType;
 import io.github.zhoujunlin94.meet.common.pojo.PageParam;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -12,22 +11,22 @@ import lombok.Data;
  * @desc
  */
 @Data
-@ApiModel(description = "系统资源分页参数")
+@Schema(description = "系统资源分页参数")
 public class SysResourcePageParamDTO extends PageParam {
 
-    @ApiModelProperty(value = "资源code")
+    @Schema(description = "资源code")
     private String resourceCode;
 
-    @ApiModelProperty(value = "资源名")
+    @Schema(description = "资源名")
     private String resourceName;
 
-    @ApiModelProperty(value = "资源类型 菜单、按钮、路由")
+    @Schema(description = "资源类型 菜单、按钮、路由")
     private ResourceType resourceType;
 
-    @ApiModelProperty(value = "父级资源id")
+    @Schema(description = "父级资源id")
     private Integer resourceParent;
 
-    @ApiModelProperty(value = "资源状态")
+    @Schema(description = "资源状态")
     private Boolean resourceStatus;
 
 }

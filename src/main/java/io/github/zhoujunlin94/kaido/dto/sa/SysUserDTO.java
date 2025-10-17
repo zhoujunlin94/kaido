@@ -1,12 +1,11 @@
 package io.github.zhoujunlin94.kaido.dto.sa;
 
 import com.google.common.collect.Lists;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -15,24 +14,24 @@ import java.util.List;
  * @desc
  */
 @Data
-@ApiModel(description = "系统用户DTO")
+@Schema(description = "系统用户DTO")
 public class SysUserDTO {
 
-    @ApiModelProperty(value = "主键  用户id  更新时必传")
+    @Schema(description = "主键  用户id  更新时必传")
     private Integer id;
 
     @NotBlank(message = "账户名不能为空")
-    @ApiModelProperty(value = "账户名")
+    @Schema(description = "账户名")
     private String accountName;
 
     @NotBlank(message = "用户真实姓名不能为空")
-    @ApiModelProperty(value = "用户真实姓名")
+    @Schema(description = "用户真实姓名")
     private String userName;
 
-    @ApiModelProperty(value = "密码")
+    @Schema(description = "密码")
     private String userPassword;
 
-    @ApiModelProperty(value = "是否有效")
+    @Schema(description = "是否有效")
     private Boolean userStatus;
 
     private List<Integer> userRoles = Lists.newArrayList();

@@ -22,7 +22,7 @@ public class SaExceptionHandler {
      */
     @ExceptionHandler(NotLoginException.class)
     public JsonResponse<Object> handlerException(NotLoginException e) {
-        return JsonResponse.fail(e.getCode(), e.getMessage());
+        return JsonResponse.create(e.getCode(), e.getMessage());
     }
 
     /**
@@ -30,7 +30,7 @@ public class SaExceptionHandler {
      */
     @ExceptionHandler(NotPermissionException.class)
     public JsonResponse<Object> handlerException(NotPermissionException e) {
-        return JsonResponse.fail(e.getCode(), "缺少权限：" + e.getPermission());
+        return JsonResponse.create(e.getCode(), "缺少权限：" + e.getPermission());
     }
 
     /**
@@ -38,7 +38,7 @@ public class SaExceptionHandler {
      */
     @ExceptionHandler(NotRoleException.class)
     public JsonResponse<Object> handlerException(NotRoleException e) {
-        return JsonResponse.fail(e.getCode(), "缺少角色：" + e.getRole());
+        return JsonResponse.create(e.getCode(), "缺少角色：" + e.getRole());
     }
 
     /**
@@ -46,7 +46,7 @@ public class SaExceptionHandler {
      */
     @ExceptionHandler(NotSafeException.class)
     public JsonResponse<Object> handlerException(NotSafeException e) {
-        return JsonResponse.fail(e.getCode(), "二级认证校验失败：" + e.getService());
+        return JsonResponse.create(e.getCode(), "二级认证校验失败：" + e.getService());
     }
 
     /**
@@ -54,7 +54,7 @@ public class SaExceptionHandler {
      */
     @ExceptionHandler(DisableServiceException.class)
     public JsonResponse<Object> handlerException(DisableServiceException e) {
-        return JsonResponse.fail(e.getCode(), "当前账号 " + e.getService() + " 服务已被封禁 (level=" + e.getLevel() + ")：" + e.getDisableTime() + "秒后解封");
+        return JsonResponse.create(e.getCode(), "当前账号 " + e.getService() + " 服务已被封禁 (level=" + e.getLevel() + ")：" + e.getDisableTime() + "秒后解封");
     }
 
     /**
@@ -62,7 +62,7 @@ public class SaExceptionHandler {
      */
     @ExceptionHandler(NotBasicAuthException.class)
     public JsonResponse<Object> handlerException(NotBasicAuthException e) {
-        return JsonResponse.fail(e.getCode(), e.getMessage());
+        return JsonResponse.create(e.getCode(), e.getMessage());
     }
 
 

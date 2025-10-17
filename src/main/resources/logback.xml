@@ -42,15 +42,16 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 
     <appender name="debug_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}${appName}_debug.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <!-- 这里直接使用 SizeAndTimeBasedRollingPolicy -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件命名规则 -->
             <fileNamePattern>${LOG_HOME}${appName}_debug.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <!-- 单个日志文件大小 -->
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <!-- 历史日志最大保存天数 -->
             <maxHistory>${maxHistory}</maxHistory>
-            <!-- 设置当前日志的文件的大小，决定日志翻滚 -->
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!-- 除按日志记录之外，还配置了日志文件不能超过10M(默认)，若超过maxFileSize，日志文件会以索引0开始， -->
-                <maxFileSize>${maxFileSize}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 可选：限制所有日志文件的总大小 -->
+            <totalSizeCap>5GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
@@ -65,15 +66,15 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 
     <appender name="info_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}${appName}_info.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 日志文件命名规则 -->
             <fileNamePattern>${LOG_HOME}${appName}_info.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <!-- 单个日志文件大小 -->
+            <maxFileSize>${maxFileSize}</maxFileSize>
+            <!-- 历史日志最大保存天数 -->
             <maxHistory>${maxHistory}</maxHistory>
-            <!-- 设置当前日志的文件的大小，决定日志翻滚 -->
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <!-- 除按日志记录之外，还配置了日志文件不能超过10M(默认)，若超过maxFileSize，日志文件会以索引0开始， -->
-                <maxFileSize>${maxFileSize}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <!-- 可选：限制所有日志文件的总大小 -->
+            <totalSizeCap>5GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
@@ -88,13 +89,11 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 
     <appender name="warn_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}${appName}_warn.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}${appName}_warn.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
             <maxHistory>${maxHistory}</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${maxFileSize}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <totalSizeCap>5GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>
@@ -109,13 +108,11 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
 
     <appender name="error_file" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}${appName}_error.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
             <fileNamePattern>${LOG_HOME}${appName}_error.log.%d{yyyy-MM-dd}-%i.zip</fileNamePattern>
+            <maxFileSize>${maxFileSize}</maxFileSize>
             <maxHistory>${maxHistory}</maxHistory>
-            <timeBasedFileNamingAndTriggeringPolicy
-                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                <maxFileSize>${maxFileSize}</maxFileSize>
-            </timeBasedFileNamingAndTriggeringPolicy>
+            <totalSizeCap>5GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
             <pattern>${LOG_PATTERN}</pattern>

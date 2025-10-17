@@ -1,8 +1,7 @@
 package io.github.zhoujunlin94.kaido.dto.sa;
 
 import io.github.zhoujunlin94.meet.common.pojo.PageParam;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -11,16 +10,16 @@ import lombok.Data;
  * @desc
  */
 @Data
-@ApiModel(description = "系统用户分页参数")
+@Schema(description = "系统用户分页参数")
 public class SysUserPageParamDTO extends PageParam {
 
-    @ApiModelProperty(value = "账户名")
+    @Schema(description = "账户名")
     private String accountName;
 
-    @ApiModelProperty(value = "用户真实姓名")
+    @Schema(description = "用户真实姓名")
     private String userName;
 
-    @ApiModelProperty(value = "是否有效")
+    @Schema(description = "是否有效")
     private Boolean userStatus;
 
 }

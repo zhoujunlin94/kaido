@@ -1,12 +1,11 @@
 package io.github.zhoujunlin94.kaido.dto.sa;
 
 import com.google.common.collect.Lists;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.springframework.util.Assert;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 /**
@@ -15,24 +14,24 @@ import java.util.List;
  * @desc
  */
 @Data
-@ApiModel(description = "系统角色DTO")
+@Schema(description = "系统角色DTO")
 public class SysRoleDTO {
 
-    @ApiModelProperty(value = "主键")
+    @Schema(description = "主键")
     private Integer id;
 
     @NotBlank(message = "角色code为空")
-    @ApiModelProperty(value = "角色code")
+    @Schema(description = "角色code")
     private String roleCode;
 
     @NotBlank(message = "角色名字不能为空")
-    @ApiModelProperty(value = "角色名字")
+    @Schema(description = "角色名字")
     private String roleName;
 
-    @ApiModelProperty(value = "角色状态")
+    @Schema(description = "角色状态")
     private Boolean roleStatus;
 
-    @ApiModelProperty(value = "角色资源")
+    @Schema(description = "角色资源")
     private List<Integer> roleResources = Lists.newArrayList();
 
     public void initCreate() {

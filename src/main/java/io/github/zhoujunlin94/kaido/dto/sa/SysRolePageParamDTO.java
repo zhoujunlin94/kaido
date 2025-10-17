@@ -1,8 +1,7 @@
 package io.github.zhoujunlin94.kaido.dto.sa;
 
 import io.github.zhoujunlin94.meet.common.pojo.PageParam;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 /**
@@ -11,16 +10,16 @@ import lombok.Data;
  * @desc
  */
 @Data
-@ApiModel(description = "系统角色分页参数")
+@Schema(description = "系统角色分页参数")
 public class SysRolePageParamDTO extends PageParam {
 
-    @ApiModelProperty(value = "角色code")
+    @Schema(description = "角色code")
     private String roleCode;
 
-    @ApiModelProperty(value = "角色名字")
+    @Schema(description = "角色名字")
     private String roleName;
 
-    @ApiModelProperty(value = "角色状态")
+    @Schema(description = "角色状态")
     private Boolean roleStatus;
 
 }

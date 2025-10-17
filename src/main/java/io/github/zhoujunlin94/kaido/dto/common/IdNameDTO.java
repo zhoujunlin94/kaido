@@ -1,7 +1,6 @@
 package io.github.zhoujunlin94.kaido.dto.common;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,13 +13,13 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ApiModel(description = "id-name数据")
+@Schema(description = "id-name数据")
 public class IdNameDTO {
 
-    @ApiModelProperty(value = "id")
+    @Schema(description = "id")
     private Integer id;
 
-    @ApiModelProperty(value = "name")
+    @Schema(description = "name")
     private String name;
 
 }

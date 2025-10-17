@@ -3,61 +3,47 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>io.github.zhoujunlin94</groupId>
+    <parent>
+        <groupId>io.github.zhoujunlin94</groupId>
+        <artifactId>meet</artifactId>
+        <version>3.2.3</version>
+    </parent>
+
     <artifactId>kaido</artifactId>
     <version>1.0.0</version>
-
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.11</version>
-        <relativePath/>
-    </parent>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>1.8</java.version>
+        <java.version>17</java.version>
 
-        <meet.version>1.2.9</meet.version>
-        <sa-token.version>1.37.0</sa-token.version>
-
+        <spring-boot.version>3.3.6</spring-boot.version>
     </properties>
 
     <dependencies>
         <dependency>
             <groupId>io.github.zhoujunlin94</groupId>
             <artifactId>meet-web</artifactId>
-            <version>${meet.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.zhoujunlin94</groupId>
             <artifactId>meet-tk_mybatis</artifactId>
-            <version>${meet.version}</version>
         </dependency>
         <dependency>
             <groupId>io.github.zhoujunlin94</groupId>
             <artifactId>meet-redis</artifactId>
-            <version>${meet.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>io.github.zhoujunlin94</groupId>
-            <artifactId>meet-feign</artifactId>
-            <version>${meet.version}</version>
         </dependency>
 
         <!-- Sa-Token权限认证 -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-spring-boot-starter</artifactId>
-            <version>${sa-token.version}</version>
         </dependency>
 
         <!-- Sa-Token 整合 Redis （使用 jackson 序列化方式） -->
         <dependency>
             <groupId>cn.dev33</groupId>
             <artifactId>sa-token-redis-jackson</artifactId>
-            <version>${sa-token.version}</version>
         </dependency>
 
         <!--测试相关-->
@@ -73,6 +59,7 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>${spring-boot.version}</version>
             </plugin>
         </plugins>
     </build>

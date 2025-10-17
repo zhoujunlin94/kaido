@@ -1,10 +1,9 @@
 package io.github.zhoujunlin94.kaido.dto.sa;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
-import javax.validation.constraints.NotBlank;
 
 /**
  * @author zhoujunlin
@@ -12,15 +11,15 @@ import javax.validation.constraints.NotBlank;
  * @desc
  */
 @Data
-@ApiModel(description = "登录参数")
+@Schema(description = "登录参数")
 public class LoginParamDTO {
 
     @NotBlank(message = "账户名不可为空")
-    @ApiModelProperty(value = "账户名")
+    @Schema(description = "账户名")
     private String accountName;
 
     @NotBlank(message = "用户密码不可为空")
-    @ApiModelProperty(value = "用户密码")
+    @Schema(description = "用户密码")
     private String userPassword;
 
 }
