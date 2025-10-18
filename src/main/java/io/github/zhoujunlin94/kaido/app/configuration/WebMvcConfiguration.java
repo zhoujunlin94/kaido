@@ -3,6 +3,7 @@ package io.github.zhoujunlin94.kaido.app.configuration;
 import cn.dev33.satoken.interceptor.SaInterceptor;
 import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpUtil;
+import io.github.zhoujunlin94.meet.web.constant.FastJsonConfigConst;
 import io.github.zhoujunlin94.meet.web.interceptor.HttpBaseInterceptor;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Configuration;
@@ -23,8 +24,6 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Resource
     private HttpBaseInterceptor httpBaseInterceptor;
-    @Resource
-    private HttpMessageConverter<Object> fastJsonHttpMessageConverter;
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
@@ -62,7 +61,7 @@ public class WebMvcConfiguration implements WebMvcConfigurer {
 
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
-        converters.add(0, fastJsonHttpMessageConverter);
+        converters.add(0, FastJsonConfigConst.defaultFastJsonHttpMessageConverter());
     }
 
     @Override

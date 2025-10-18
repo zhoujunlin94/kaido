@@ -7,6 +7,7 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.media.StringSchema;
 import io.swagger.v3.oas.models.parameters.Parameter;
 import io.swagger.v3.oas.models.servers.Server;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -29,6 +30,22 @@ public class OpenApiConfig {
                 .components(new Components()
                         .addParameters("token", new Parameter().in(ParameterIn.HEADER.toString()).name("Authorization").required(false).description("Token").schema(new StringSchema()))
                 );
+    }
+
+    @Bean
+    public GroupedOpenApi defaultApi() {
+        return GroupedOpenApi.builder()
+                .group("默认")
+                .pathsToMatch("/**")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi saApi() {
+        return GroupedOpenApi.builder()
+                .group("sa权限")
+                .pathsToMatch("/api/sa/**")
+                .build();
     }
 
 }

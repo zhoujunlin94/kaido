@@ -60,10 +60,15 @@ public class SaExceptionHandler {
     /**
      * 拦截：Http Basic 校验失败异常
      */
-    @ExceptionHandler(NotBasicAuthException.class)
-    public JsonResponse<Object> handlerException(NotBasicAuthException e) {
+    @ExceptionHandler(NotHttpBasicAuthException.class)
+    public JsonResponse<Object> handlerException(NotHttpBasicAuthException e) {
         return JsonResponse.create(e.getCode(), e.getMessage());
     }
 
+    @ExceptionHandler(Exception.class)
+    public JsonResponse<Object> handlerException(Exception e) {
+        log.error("handlerException", e);
+        return JsonResponse.fail(e.getMessage());
+    }
 
 }

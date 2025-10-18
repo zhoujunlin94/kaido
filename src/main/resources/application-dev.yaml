@@ -11,6 +11,7 @@ meet:
         mybatis:
           entityPackage: io.github.zhoujunlin94.kaido.repository.db.entity.base
           mapperPackage: io.github.zhoujunlin94.kaido.repository.db.mapper.base
+          mapper-xml-location: classpath:mybatis/base/*.xml
           interceptors:
             - clazz: com.github.pagehelper.PageInterceptor
               properties:
@@ -38,6 +39,9 @@ spring:
           min-idle: 1
           # 连接池最大阻塞等待时间（使用负值表示没有限制）
           max-wait: -1
+  mvc:
+    pathmatch:
+      matching-strategy: path_pattern_parser
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
 sa-token:
