@@ -25,7 +25,7 @@ spring:
   data:
     redis:
       host: localhost
-      port: 16379
+      port: 6379
       password: meetredis
       database: 0
       lettuce:
@@ -56,3 +56,19 @@ sa-token:
   token-style: uuid
   # 是否输出操作日志
   is-log: true
+
+# springdoc-openapi项目配置
+springdoc:
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    tags-sorter: alpha
+    operations-sorter: alpha
+  api-docs:
+    path: /v3/api-docs
+
+# knife4j的增强配置，不需要增强可以不配
+knife4j:
+  enable: true
+  setting:
+    language: zh_cn
